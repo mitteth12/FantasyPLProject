@@ -1,0 +1,4 @@
+USE FANTASY_PL
+
+SELECT * FROM TEAMS
+ORDER BY strength_overall_home DESC
