@@ -34,10 +34,11 @@ CREATE TABLE players_raw_2021 (
     transfers_in INT NOT NULL,
     transfers_out INT NOT NULL,
     yellow_cards INT NOT NULL,
+    prices FLOAT NOT NULL,
     PRIMARY KEY (player_id)
     
 );
 
-SELECT * FROM players_raw_2021
+SELECT * FROM players_raw
 
 
