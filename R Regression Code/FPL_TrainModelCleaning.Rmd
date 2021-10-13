@@ -1,0 +1,114 @@
+---
+title: "FPL Ten Gameweek Predictive Model"
+author: "Ethan Mitten"
+date: "10/13/2021"
+output: html_document
+---
+
+```{r}
+#Load in packages
+library(dplyr)
+library(tidyverse)
+```
+
+
+```{r}
+#Load in datasets
+gw1 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw1.csv")
+gw2 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw2.csv")
+gw3 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw3.csv")
+gw4 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw4.csv")
+gw5 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw5.csv")
+gw6 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw6.csv")
+gw7 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw7.csv")
+gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw8.csv")
+gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw9.csv")
+gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/gws/gw10.csv")
+```
+
+```{r}
+#Make a function to quickly select only the columns we want from each dataset
+gameweek_column_cleaner <- function(gameweek_variable) {
+  gameweek_variable %>% select(c(total_points,assists,bonus,bps,clean_sheets,goals_scored,influence,minutes,saves,threat,name)) 
+}
+```
+
+```{r}
+#Use function to select columns in dataset
+gw1 <- gameweek_column_cleaner(gw1)
+gw2 <- gameweek_column_cleaner(gw2)
+gw3 <- gameweek_column_cleaner(gw3)
+gw4 <- gameweek_column_cleaner(gw4)
+gw5 <- gameweek_column_cleaner(gw5)
+gw6 <- gameweek_column_cleaner(gw6)
+gw7 <- gameweek_column_cleaner(gw7)
+gw8 <- gameweek_column_cleaner(gw8)
+gw9 <- gameweek_column_cleaner(gw9)
+gw10 <- gameweek_column_cleaner(gw10)
+```
+
+```{r}
+#Inner join all the gameweeks into one dataset
+a <- gw10 %>% inner_join(gw9, by="name") 
+b <- a %>% inner_join(gw8, by="name")
+c <- b %>% inner_join(gw7, by="name")
+d <- c %>% inner_join(gw6, by="name")
+e <- d %>% inner_join(gw5, by="name") 
+f <- e %>% inner_join(gw4, by="name")
+g <- f %>% inner_join(gw3, by="name") 
+h <- g %>% inner_join(gw2, by="name")
+cumulative_gw <- h %>% inner_join(gw1, by="name")
+```
+
+```{r}
+#Tidious Cumulative Summing
+cumulative_gw$total.points <- cumulative_gw$total_points + cumulative_gw$total_points.x + cumulative_gw$total_points.x.x + cumulative_gw$total_points.x.x.x + cumulative_gw$total_points.x.x.x.x + cumulative_gw$total_points.y + cumulative_gw$total_points.y.y + cumulative_gw$total_points.y.y.y + cumulative_gw$total_points.y.y.y.y
+
+#assists
+cumulative_gw$assists. <- cumulative_gw$assists + cumulative_gw$assists.x + cumulative_gw$assists.x.x + cumulative_gw$assists.x.x.x + cumulative_gw$assists.x.x.x.x + cumulative_gw$assists.y + cumulative_gw$assists.y.y + cumulative_gw$assists.y.y.y + cumulative_gw$assists.y.y.y.y
+
+#bonus
+cumulative_gw$bonus. <- cumulative_gw$bonus + cumulative_gw$bonus.x + cumulative_gw$bonus.x.x + cumulative_gw$bonus.x.x.x + cumulative_gw$bonus.x.x.x.x + cumulative_gw$bonus.y + cumulative_gw$bonus.y.y + cumulative_gw$bonus.y.y.y + cumulative_gw$bonus.y.y.y.y
+
+#bps
+cumulative_gw$bps. <- cumulative_gw$bps + cumulative_gw$bps.x + cumulative_gw$bps.x.x + cumulative_gw$bps.x.x.x + cumulative_gw$bps.x.x.x.x + cumulative_gw$bps.y + cumulative_gw$bps.y.y + cumulative_gw$bps.y.y.y + cumulative_gw$bps.y.y.y.y
+
+#clean_sheets
+cumulative_gw$clean.sheets <- cumulative_gw$clean_sheets + cumulative_gw$clean_sheets.x + cumulative_gw$clean_sheets.x.x + cumulative_gw$clean_sheets.x.x.x + cumulative_gw$clean_sheets.x.x.x.x + cumulative_gw$clean_sheets.y + cumulative_gw$clean_sheets.y.y + cumulative_gw$clean_sheets.y.y.y + cumulative_gw$clean_sheets.y.y.y.y
+
+#goals_scored
+cumulative_gw$goals.scored <- cumulative_gw$goals_scored + cumulative_gw$goals_scored.x + cumulative_gw$goals_scored.x.x + cumulative_gw$goals_scored.x.x.x + cumulative_gw$goals_scored.x.x.x.x + cumulative_gw$goals_scored.y + cumulative_gw$goals_scored.y.y + cumulative_gw$goals_scored.y.y.y + cumulative_gw$goals_scored.y.y.y.y
+
+#influence
+cumulative_gw$influence. <- cumulative_gw$influence + cumulative_gw$influence.x + cumulative_gw$influence.x.x + cumulative_gw$influence.x.x.x + cumulative_gw$influence.x.x.x.x + cumulative_gw$influence.y + cumulative_gw$influence.y.y + cumulative_gw$influence.y.y.y + cumulative_gw$influence.y.y.y.y
+
+#minutes
+cumulative_gw$minutes. <- cumulative_gw$minutes + cumulative_gw$minutes.x + cumulative_gw$minutes.x.x + cumulative_gw$minutes.x.x.x + cumulative_gw$minutes.x.x.x.x + cumulative_gw$minutes.y + cumulative_gw$minutes.y.y + cumulative_gw$minutes.y.y.y + cumulative_gw$minutes.y.y.y.y
+
+#saves
+cumulative_gw$saves. <- cumulative_gw$saves + cumulative_gw$saves.x + cumulative_gw$saves.x.x + cumulative_gw$saves.x.x.x + cumulative_gw$saves.x.x.x.x + cumulative_gw$saves.y + cumulative_gw$saves.y.y + cumulative_gw$saves.y.y.y + cumulative_gw$saves.y.y.y.y
+
+#threats
+cumulative_gw$threat. <- cumulative_gw$threat + cumulative_gw$threat.x + cumulative_gw$threat.x.x + cumulative_gw$threat.x.x.x + cumulative_gw$threat.x.x.x.x + cumulative_gw$threat.y + cumulative_gw$threat.y.y + cumulative_gw$threat.y.y.y + cumulative_gw$threat.y.y.y.y
+```
+
+```{r}
+#Make a new dataframe for just the columns that are used in the best linear regression model
+train <- cumulative_gw %>% select(c(name, total.points, assists., bonus., bps., clean.sheets, goals.scored, influence., minutes., saves., threat.))
+```
+
+```{r}
+#Write dataframe into excel file
+#library(data.table)
+#fwrite(train, "~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLTrainModel.csv")
+```
+
+
+
+
+
+
+
+
+
+

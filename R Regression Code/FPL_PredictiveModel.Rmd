@@ -1,0 +1,160 @@
+---
+title: "FPL Ten Gameweek Predictive Model"
+author: "Ethan Mitten"
+date: "10/13/2021"
+output: html_document
+---
+
+```{r}
+#Load in packages
+library(dplyr)
+library(tidyverse)
+```
+
+```{r}
+#Load in Beginning Data
+train <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLTrainModel.csv")
+FPL_1920 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2019-20/players_raw.csv")
+FPL_2021 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+```
+
+```{r}
+#Select certain values for using the model
+FPL_1920 <- FPL_1920 %>% select(total_points, assists, bonus, bps, clean_sheets, goals_scored, influence, saves, threat, minutes)
+```
+
+```{r}
+#Rename columns in dataset
+names(FPL_1920)[names(FPL_1920) == "total_points"] <- "total.points"
+names(FPL_1920)[names(FPL_1920) == "assists"] <- "assists."
+names(FPL_1920)[names(FPL_1920) == "bonus"] <- "bonus."
+names(FPL_1920)[names(FPL_1920) == "bps"] <- "bps."
+names(FPL_1920)[names(FPL_1920) == "clean_sheets"] <- "clean.sheets"
+names(FPL_1920)[names(FPL_1920) == "goals_scored"] <- "goals.scored"
+names(FPL_1920)[names(FPL_1920) == "influence"] <- "influence."
+names(FPL_1920)[names(FPL_1920) == "saves"] <- "saves."
+names(FPL_1920)[names(FPL_1920) == "threat"] <- "threat."
+names(FPL_1920)[names(FPL_1920) == "minutes"] <- "minutes."
+```
+
+
+```{r}
+#Make linear regression model based on best model from other markdown sheet
+model <- lm(total.points ~ assists. + bonus. + bps. + clean.sheets + goals.scored + influence. + saves. + threat. + minutes. , data = train)
+summary(model)
+```
+
+```{r}
+#Look at the histogram for model residuals
+ggplot(data=train, aes(model$residuals)) +
+geom_histogram(binwidth = 1, color = "black", fill = "purple2") +
+theme(panel.background = element_rect(fill = "white"),
+axis.line.x=element_line(),
+axis.line.y=element_line()) +
+ggtitle("Histogram for Model Residuals")
+```
+
+
+```{r}
+#Predict values for 2019-20 season
+prediction_1920 <- predict(model, newdata = FPL_1920)
+FPL_1920$prediction <- round(prediction_1920,0)
+FPL_1920$difference <- round((FPL_1920$prediction - FPL_1920$total.points),0)
+```
+
+
+```{r}
+#Look at distribution of difference values for 2019-20
+ggplot(FPL_1920, aes(x=difference)) +
+  geom_boxplot()
+
+mean(FPL_1920$difference)
+```
+
+#Testing Current Year (Will Need to Go Back and Clean the Current Cumulative Year so That Name is Invovled)
+#This model will only predict what each player should be at for gameweek 7 not where they will end up....
+
+```{r}
+FPL_2021 <- FPL_2021 %>% select(total_points, assists, bonus, bps, clean_sheets, goals_scored, influence, saves, threat, minutes)
+```
+
+```{r}
+names(FPL_2021)[names(FPL_2021) == "total_points"] <- "total.points"
+names(FPL_2021)[names(FPL_2021) == "assists"] <- "assists."
+names(FPL_2021)[names(FPL_2021) == "bonus"] <- "bonus."
+names(FPL_2021)[names(FPL_2021) == "bps"] <- "bps."
+names(FPL_2021)[names(FPL_2021) == "clean_sheets"] <- "clean.sheets"
+names(FPL_2021)[names(FPL_2021) == "goals_scored"] <- "goals.scored"
+names(FPL_2021)[names(FPL_2021) == "influence"] <- "influence."
+names(FPL_2021)[names(FPL_2021) == "saves"] <- "saves."
+names(FPL_2021)[names(FPL_2021) == "threat"] <- "threat."
+names(FPL_2021)[names(FPL_2021) == "minutes"] <- "minutes."
+```
+
+```{r}
+prediction_2021 <- predict(model, newdata = FPL_2021)
+FPL_2021$prediction <- round(prediction_2021,0)
+FPL_2021$difference <- round((FPL_2021$prediction - FPL_2021$total.points),0)
+```
+
+
+```{r}
+ggplot(FPL_2021, aes(x=difference)) +
+  geom_boxplot()
+
+mean(FPL_2021$difference)
+```
+
+```{r}
+FPL_2122 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
+```
+
+```{r}
+names(FPL_2122)[names(FPL_2122) == "total_points"] <- "total.points"
+names(FPL_2122)[names(FPL_2122) == "assists"] <- "assists."
+names(FPL_2122)[names(FPL_2122) == "bonus"] <- "bonus."
+names(FPL_2122)[names(FPL_2122) == "bps"] <- "bps."
+names(FPL_2122)[names(FPL_2122) == "clean_sheets"] <- "clean.sheets"
+names(FPL_2122)[names(FPL_2122) == "goals_scored"] <- "goals.scored"
+names(FPL_2122)[names(FPL_2122) == "influence"] <- "influence."
+names(FPL_2122)[names(FPL_2122) == "saves"] <- "saves."
+names(FPL_2122)[names(FPL_2122) == "threat"] <- "threat."
+names(FPL_2122)[names(FPL_2122) == "minutes"] <- "minutes."
+```
+
+```{r}
+prediction_2122 <- predict(model, newdata = FPL_2122)
+FPL_2122$prediction <- round(prediction_2122,0)
+FPL_2122$difference <- round((FPL_2122$prediction - FPL_2122$total.points),0)
+```
+
+
+```{r}
+ggplot(FPL_2122, aes(x=difference)) +
+  geom_boxplot()
+
+mean(FPL_2122$difference)
+```
+
+#Looking at the model I can use the difference column to see who is projected to have more points than they have at the moment. Gabriel Jesus is at the top of the list with surprisingly Michail Antonio. I have overlooked Antonio as I felt he was overhyped, but so far the data is suggesting good things from both of these players. In terms of who has the highest projected points. My team holds five of the top 20 projected players in it. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

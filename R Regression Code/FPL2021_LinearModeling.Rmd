@@ -1,0 +1,150 @@
+---
+title: "FPL Regression Analysis"
+author: "Ethan Mitten"
+date: "10/11/2021"
+output: html_document
+---
+
+#Sources Used: http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/155-best-subsets-regression-essentials-in-r/
+
+```{r}
+#Load in Data and Packages
+FPL_2021 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+
+library(dplyr)
+
+#Select Certain Columns to Observe and Make a Model With
+FPL2021_Data <- FPL_2021 %>% select(-c(first_name, second_name, corners_and_indirect_freekicks_order,
+                                       direct_freekicks_order, dreamteam_count, ict_index_rank, id,
+                                       influence_rank, penalties_missed, penalties_order, red_cards, yellow_cards,
+                                       team_code, threat_rank, threat_rank_type, creativity_rank))
+```
+
+#Analyzing 2020-21 Season Data
+
+```{r}
+#Load in Packages
+#install.packages("leaps")
+library(tidyverse)
+library(caret)
+library(leaps)
+```
+
+```{r}
+#Get Visual of 2020-21 Season Data
+sample_n(FPL2021_Data, 5)
+```
+
+```{r}
+#Make Multi Linear Regression Model Based on Variables
+MLR2021_model <- lm(total_points~., data = FPL2021_Data)
+summary(MLR2021_model)
+```
+#From our test we can see that our R^2 is 99% which is very high. Either these statistics are very good at predicting total points or we have some statistics that are very close to total_points. Looking back through the data points_per_game might be the statistic that is causing this issue. Let us take this variable out and see how the model performs.
+
+```{r}
+#Make new dataframe without points per game and run model again
+FPL2021_minusppg <- FPL2021_Data %>% select(-points_per_game)
+MLR2021_revmodel <- lm(total_points~., data = FPL2021_minusppg)
+summary(MLR2021_revmodel)
+```
+#Interestingly enough from our p-values the variables that are still pulling this to a really high R^2 value are assists, bonus, bps, clean_sheets, goals_scored, minutes and saves none of which are direct indicators by themselves in a player's total points. From here lets find the best model
+
+```{r}
+#Finding Best Model Using Best Subset Method
+model_2021 <- regsubsets(total_points~., data = FPL2021_minusppg, nvmax=16)
+summary(model_2021)
+```
+
+#The above shows what the best variables for each amount of variables are. For example, the best 1-variable predictor model is "influence" and the best 2-variable predictor model is "bps" and "threat". We are going to go from here to decide which model does the best job.
+
+
+```{r}
+#See which model works best for adj r^2, cp, and bic
+res.sum <- summary(model_2021)
+data.frame(
+  Adj.R2 = which.max(res.sum$adjr2),
+  CP = which.min(res.sum$cp),
+  BIC = which.min(res.sum$bic)
+)
+```
+
+#Using the above test it can be determined that the best adjusted R^2 is found with the model with 14 variables, but the best CP and BIC are found with the model having 9 variables. To prevent overfitting we are going to use another method to ensure the best model selection.
+
+#K-Fold Cross Validation
+
+```{r}
+#k-folds formula taken from above source
+# id: model id
+# object: regsubsets object
+# data: data used to fit regsubsets
+# outcome: outcome variable
+get_model_formula <- function(id, object, outcome){
+  # get models data
+  models <- summary(object)$which[id,-1]
+  # Get outcome variable
+  #form <- as.formula(object$call[[2]])
+  #outcome <- all.vars(form)[1]
+  # Get model predictors
+  predictors <- names(which(models == TRUE))
+  predictors <- paste(predictors, collapse = "+")
+  # Build model formula
+  as.formula(paste0(outcome, "~", predictors))
+}
+```
+
+```{r}
+#Function to get the cross validation error for a model
+get_cv_error <- function(model.formula, data){
+  set.seed(1)
+  train.control <- trainControl(method = "cv", number = 14)
+  cv <- train(model.formula, data = data, method = "lm",
+              trControl = train.control)
+  cv$results$RMSE
+}
+```
+
+```{r}
+# Compute cross-validation error
+model.ids <- 1:14
+cv.errors <-  map(model.ids, get_model_formula, model_2021, "total_points") %>%
+  map(get_cv_error, data = FPL2021_minusppg) %>%
+  unlist()
+cv.errors
+```
+```{r}
+# Select the model that minimize the CV error
+which.min(cv.errors)
+```
+
+```{r}
+#Best Predicting Model
+coef(model_2021, 9)
+```
+
+#Using k-folds confirms our variables that seem to be the best predictors of total_points.
+
+````{r}
+best2021_model <- lm(total_points~assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=FPL2021_minusppg)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
