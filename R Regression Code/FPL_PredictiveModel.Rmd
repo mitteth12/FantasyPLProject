@@ -138,6 +138,78 @@ mean(FPL_2122$difference)
 
 #Looking at the model I can use the difference column to see who is projected to have more points than they have at the moment. Gabriel Jesus is at the top of the list with surprisingly Michail Antonio. I have overlooked Antonio as I felt he was overhyped, but so far the data is suggesting good things from both of these players. In terms of who has the highest projected points. My team holds five of the top 20 projected players in it. 
 
+```{r}
+gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
+#gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
+
+#Just keep adding gameweeks to keep it going
+```
+
+```{r}
+#Make a function to quickly select only the columns we want from each dataset
+gameweek_column_cleaner <- function(gameweek_variable) {
+  gameweek_variable %>% select(c(total_points,assists,bonus,bps,clean_sheets,goals_scored,influence,minutes,saves,threat,name)) 
+}
+```
+
+```{r}
+#Put in gameweek
+
+gameweek_column_cleaner(gw8)
+#gameweek_column_cleaner(gw9)
+```
+
+```{r}
+#Keep adding to make next projections
+gw8_projections <- FPL_2122 %>% inner_join(gw8, by="name")
+#gw9_projections <- gw8 %>% inner_join(gw8_projections, by= "name")
+
+#Current Week's Projection Model
+X = gw8_projections
+```
+
+```{r}
+#Rename columns to fit model
+names(X)[names(X) == "total_points"] <- "total.points"
+names(X)[names(X) == "assists"] <- "assists."
+names(X)[names(X) == "bonus"] <- "bonus."
+names(X)[names(X) == "bps"] <- "bps."
+names(X)[names(X) == "clean_sheets"] <- "clean.sheets"
+names(X)[names(X) == "goals_scored"] <- "goals.scored"
+names(X)[names(X) == "influence"] <- "influence."
+names(X)[names(X) == "saves"] <- "saves."
+names(X)[names(X) == "threat"] <- "threat."
+names(X)[names(X) == "minutes"] <- "minutes."
+```
+
+```{r}
+#Model Predictions for Each Current Gameweek
+live_predictions <- predict(model, newdata = X)
+X$prediction <- round(live_predictions,0)
+X$difference <- round((X$prediction - X$total.points),0)
+```
+
+
+```{r}
+#Graph and Evaluate Each Weeks Performance
+ggplot(X, aes(x=difference)) +
+  geom_boxplot()
+
+mean(X$difference)
+```
+
+Week 8
+
+#Still has similar people holding the highest predictive differences. Gabriel Jesus, Michail Antonio, Romelu Lukaku...
+
+Week 9
+
+
+Week 10...
+
+
+
+
 
 
 

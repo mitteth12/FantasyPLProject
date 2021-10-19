@@ -7,11 +7,15 @@ output: html_document
 
 #Sources Used: http://www.sthda.com/english/articles/37-model-selection-essentials-in-r/155-best-subsets-regression-essentials-in-r/
 
+
+```{r}
+library(dplyr)
+```
+
 ```{r}
 #Load in Data and Packages
 FPL_2021 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
 
-library(dplyr)
 
 #Select Certain Columns to Observe and Make a Model With
 FPL2021_Data <- FPL_2021 %>% select(-c(first_name, second_name, corners_and_indirect_freekicks_order,
@@ -128,12 +132,117 @@ coef(model_2021, 9)
 best2021_model <- lm(total_points~assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=FPL2021_minusppg)
 ```
 
+#Standard Residual
+#Measure of the strength of the difference between observed and expected values
+```{r}
+data.resid <- resid(best2021_model)
+```
+
+#Studentized Residual
+#Residual divided by the individualized(estimated) standard deviation
+```{r}
+data.stresid <- rstandard(best2021_model)
+```
+
+#Deleted t Residual (Preferred Method)
+#Residual divided by individualized (estimated) standard deviation based on data excluding that point
+```{r}
+data.rstudent <- rstudent(best2021_model)
+```
+
+#Predicted total points for each player in the FPL2021_minusppg dataset
+```{r}
+predictz <- predict(best2021_model)
+predictz
+```
+
+#Plots comparing the predicted values to the studentized and standard residuals
+```{r}
+plot(predictz, data.stresid)
+plot(predictz, data.resid)
+```
+#If the model fits well there should be no patterns present for either of the predictors and as can be seen by the plots there does not seem to be any distinct trends
+
+#Normal Q-Q Plot
+```{r}
+qqnorm(data.rstudent, pch=20)
+qqline(data.rstudent, col="blue")
+```
+
+#In the qqplot we are looking for the data points to follow the qqplot line and to be almost a straight line, but we see we run into some trouble making that conclusion. This plot indicates that our random values DO NOT follow a normal distribution. 
+
+#Some reasons for this could be that:
+1. We have some extreme values in our data
+2. Insufficient Data Discrimination
+3. Overlapping processes
+4. Values Close to Zero or Natural Limit
+
+Source: https://www.isixsigma.com/tools-templates/normality/dealing-non-normal-data-strategies-and-tools/
+
+#Histogram of deleted t residuals
+```{r}
+hist(data.rstudent) #histogram
+```
+
+#When looking at a histogram of the deleted t residuals we would like to see a normal distribution in the histogram. It is a little tough to make a conclusion as it roughly follows a normal distribution pattern, but we have a higher frequency of data on the right side of our middle bar than the left side.
+
+#Do residual versus explanatory variables
+```{r}
+plot(FPL2021_minusppg$assists, data.rstudent, pch=20) #residual vs. assists
+abline(h=0)
+plot(FPL2021_minusppg$bonus, data.rstudent, pch=20) #residual vs. bonus
+abline(h=0)
+plot(FPL2021_minusppg$bps, data.rstudent, pch=20) #residual vs. bps
+abline(h=0)
+plot(FPL2021_minusppg$clean_sheets, data.rstudent, pch=20) #residual vs. clean_sheets
+abline(h=0)
+plot(FPL2021_minusppg$goals_scored, data.rstudent, pch=20) #residual vs. goals_scored
+abline(h=0)
+plot(FPL2021_minusppg$influence, data.rstudent, pch=20) #residual vs. influence
+abline(h=0)
+plot(FPL2021_minusppg$minutes, data.rstudent, pch=20) #residual vs. minutes
+abline(h=0)
+plot(FPL2021_minusppg$saves, data.rstudent, pch=20) #residual vs. saves
+abline(h=0)
+plot(FPL2021_minusppg$threat, data.rstudent, pch=20) #residual vs. threat
+abline(h=0)
+```
+#In these graphs of residual vs. explanatory variable we are looking for variables that are random in the graph to suggest a good fit. When looking at the data it might be deemed that saves is not a variable that would be considered random, but all the rest of the values fall pretty well in line.
+
+
+#Added Variable Plots
+```{r}
+library(car)
+avPlots(best2021_model)
+```
+
+#In this we are looking to judge the marginal usefulness of each explanatory variable. We want the data points to follow the lines. Almost all of these graphs has outlying players invovled in the process. One player that looks to be present in about every graphic is 321. Let us take a look at what is going on with this player.
+
+```{r}
+#Roberto Firmino
+FPL_2021[321,]
+```
+
+#Firmino seems to be a player that stats would lead him to have a higher total number of points than he did. Lets verify this by comparing his 141 points that he scored to what was predicted for him
+
+```{r}
+#Predicted Firmino Points
+predictz[321]
+```
+#Firmino's predicted points were off by 24 points which is not the huge residual I thought it would be. Still is a big difference compared to what we are seeing from our normal distribution which is showing that 99% of our data is within the range of -4 to 4 for the residual. 
 
 
 
 
 
 
+#The Next Step
+
+#There seem to be some problems that are going on with our model in the form of some assumptions that are not being met. Sitting back and thinking about what these problems could be I have come to a conclusion that we may need to make models different for each position. If I am making a model predicting total points and saves is shown to be significant than that is problematic. This is because a heavy majority of the players in the dataset are going to have 0 saves because most of them are not goalkeepers or are goalkeepers that did not play. This is backed by the scatterplot presented earlier looking at saves. We should divide this dataset of 600 into each position and go through the same process and see if we are getting a normal distribution.
+
+```{r}
+NewFPL2021 <- read_csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+```
 
 
 

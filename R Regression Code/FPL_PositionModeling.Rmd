@@ -1,0 +1,392 @@
+---
+title: "FPL2021_PositionLinearModeling"
+author: "Ethan Mitten"
+date: "10/19/2021"
+output: html_document
+---
+
+#Load in data
+```{r}
+data <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw_pos.csv")
+```
+
+#Load in packages
+```{r}
+library(dplyr)
+library(tidyverse)
+library(caret)
+library(leaps)
+```
+
+#Filter data into position datasets
+```{r}
+gk_data <- filter(data, element_type == "GK")
+def_data <- filter(data, element_type == "DEF")
+mid_data <- filter(data, element_type == "MID")
+fwd_data <- filter(data, element_type == "FWD")
+```
+
+```{r}
+#Select only columns we want to model on
+
+#gk_data <-gk_data %>% select(-c(element_type, first_name, second_name))
+def_data <- def_data %>% select(-c(element_type, first_name, second_name))
+mid_data <- mid_data %>% select(-c(element_type, first_name, second_name))
+fwd_data <- fwd_data %>% select(-c(element_type, first_name, second_name))
+```
+
+
+#GOALKEEPERS
+
+#Use best subset to find best goalkeeper model
+```{r}
+model_gk <- regsubsets(total_points~., data=gk_data)
+summary(model_gk)
+```
+
+```{r}
+#See which model works best for adj r^2, cp, and bic
+res.sum.gk <- summary(model_gk)
+data.frame(
+  Adj.R2 = which.max(res.sum.gk$adjr2),
+  CP = which.min(res.sum.gk$cp),
+  BIC = which.min(res.sum.gk$bic)
+)
+```
+#It is pretty clear that model 8 is the one that should be used for goalkeepers. It includes bonus, bps, clean_sheets, creativity, goals_scored, ict_index, influence and transfers_out. Lets look at how the model performs and how normal it is.
+
+```{r}
+#Goalkeeper best model
+bestgk_model <- lm(total_points~ bonus + bps + clean_sheets + creativity + goals_scored + ict_index + influence + transfers_out, data=gk_data)
+summary(bestgk_model)
+```
+
+#Standard Residual
+#Measure of the strength of the difference between observed and expected values
+```{r}
+data.resid <- resid(bestgk_model)
+```
+
+#Studentized Residual
+#Residual divided by the individualized(estimated) standard deviation
+```{r}
+data.stresid <- rstandard(bestgk_model)
+```
+
+#Deleted t Residual (Preferred Method)
+#Residual divided by individualized (estimated) standard deviation based on data excluding that point
+```{r}
+data.rstudent <- rstudent(bestgk_model)
+```
+
+#Predicted total points for each player in the gk_data dataset
+```{r}
+predictz <- predict(bestgk_model)
+```
+
+#Plots comparing the predicted values to the studentized and standard residuals
+```{r}
+plot(predictz, data.stresid)
+plot(predictz, data.resid)
+```
+#If the model fits well there should be no patterns present for either of the predictors and as can be seen by the plots there does not seem to be any distinct trends
+
+#Normal Q-Q Plot
+```{r}
+qqnorm(data.rstudent, pch=20)
+qqline(data.rstudent, col="blue")
+```
+
+#Histogram
+```{r}
+hist(data.rstudent) #histogram
+```
+
+#Seen from the histogram above we are getting the same inconsistencies that the big model was getting.
+
+
+
+MIDFIELDERS
+
+
+#Use best subset to find best midfielder model
+```{r}
+model_mid <- regsubsets(total_points~., data=mid_data)
+summary(model_mid)
+```
+
+```{r}
+#See which model works best for adj r^2, cp, and bic
+res.sum.mid <- summary(model_mid)
+data.frame(
+  Adj.R2 = which.max(res.sum.mid$adjr2),
+  CP = which.min(res.sum.mid$cp),
+  BIC = which.min(res.sum.mid$bic)
+)
+```
+#Model 9 is the preferred. Assists, bonus, bps, clean_sheets, goals_scored, influence, minutes, threat, transfers_in
+
+```{r}
+#Midfielder best model
+bestmid_model <- lm(total_points~ bonus + bps + clean_sheets + assists + goals_scored + minutes + influence + transfers_in + threat, data=mid_data)
+summary(bestmid_model)
+```
+
+#Standard Residual
+#Measure of the strength of the difference between observed and expected values
+```{r}
+data.resid.mid <- resid(bestmid_model)
+```
+
+#Studentized Residual
+#Residual divided by the individualized(estimated) standard deviation
+```{r}
+data.stresid.mid <- rstandard(bestmid_model)
+```
+
+#Deleted t Residual (Preferred Method)
+#Residual divided by individualized (estimated) standard deviation based on data excluding that point
+```{r}
+data.rstudent.mid <- rstudent(bestmid_model)
+```
+
+#Predicted total points for each player in the mid_data dataset
+```{r}
+predictz.mid <- predict(bestmid_model)
+```
+
+#Plots comparing the predicted values to the studentized and standard residuals
+```{r}
+plot(predictz.mid, data.stresid.mid)
+plot(predictz.mid, data.resid.mid)
+```
+#If the model fits well there should be no patterns present for either of the predictors and as can be seen by the plots there does not seem to be any distinct trends
+
+#Normal Q-Q Plot
+```{r}
+qqnorm(data.rstudent.mid, pch=20)
+qqline(data.rstudent.mid, col="blue")
+```
+
+#Histogram
+```{r}
+hist(data.rstudent.mid) #histogram
+```
+#We are seeing similar problems with the midfielder model
+
+
+
+DEFENDERS
+
+#Use best subset to find best defender model
+```{r}
+model_def <- regsubsets(total_points~., data=def_data)
+summary(model_def)
+```
+
+```{r}
+#See which model works best for adj r^2, cp, and bic
+res.sum.def <- summary(model_def)
+data.frame(
+  Adj.R2 = which.max(res.sum.def$adjr2),
+  CP = which.min(res.sum.def$cp),
+  BIC = which.min(res.sum.def$bic)
+)
+```
+#Model 7 looks to be the best. assists, bonus, bps, clean_sheets, goals_scored, influence, minutes
+
+```{r}
+#Defender best model
+bestdef_model <- lm(total_points~ bonus + bps + clean_sheets + assists + goals_scored + influence + minutes, data=def_data)
+summary(bestdef_model)
+```
+
+#Standard Residual
+#Measure of the strength of the difference between observed and expected values
+```{r}
+data.resid.def <- resid(bestdef_model)
+```
+
+#Studentized Residual
+#Residual divided by the individualized(estimated) standard deviation
+```{r}
+data.stresid.def <- rstandard(bestdef_model)
+```
+
+#Deleted t Residual (Preferred Method)
+#Residual divided by individualized (estimated) standard deviation based on data excluding that point
+```{r}
+data.rstudent.def <- rstudent(bestdef_model)
+```
+
+#Predicted total points for each player in the def_data dataset
+```{r}
+predictz.def <- predict(bestdef_model)
+```
+
+#Plots comparing the predicted values to the studentized and standard residuals
+```{r}
+plot(predictz.def, data.stresid.def)
+plot(predictz.def, data.resid.def)
+```
+#If the model fits well there should be no patterns present for either of the predictors and as can be seen by the plots there does not seem to be any distinct trends
+
+#Normal Q-Q Plot
+```{r}
+qqnorm(data.rstudent.def, pch=20)
+qqline(data.rstudent.def, col="blue")
+```
+
+#Histogram
+```{r}
+hist(data.rstudent.def) #histogram
+```
+#This pattern is consistent throughout our data whether we are using a model for all positions or not.
+
+
+#FORWARDS
+
+
+#Use best subset to find best forward model
+```{r}
+model_fwd <- regsubsets(total_points~., data=fwd_data)
+summary(model_fwd)
+```
+
+```{r}
+#See which model works best for adj r^2, cp, and bic
+res.sum.fwd <- summary(model_fwd)
+data.frame(
+  Adj.R2 = which.max(res.sum.fwd$adjr2),
+  CP = which.min(res.sum.fwd$cp),
+  BIC = which.min(res.sum.fwd$bic)
+)
+```
+#Model 9. assists, bonus, bps, creativity, goals_scored, ict_index, influence, minutes, threat
+
+```{r}
+#Goalkeeper best model
+bestfwd_model <- lm(total_points~ bonus + bps + assists + creativity + goals_scored + ict_index + influence + minutes + threat, data=fwd_data)
+summary(bestfwd_model)
+```
+
+#Standard Residual
+#Measure of the strength of the difference between observed and expected values
+```{r}
+data.resid.fwd <- resid(bestfwd_model)
+```
+
+#Studentized Residual
+#Residual divided by the individualized(estimated) standard deviation
+```{r}
+data.stresid.fwd <- rstandard(bestfwd_model)
+```
+
+#Deleted t Residual (Preferred Method)
+#Residual divided by individualized (estimated) standard deviation based on data excluding that point
+```{r}
+data.rstudent.fwd <- rstudent(bestfwd_model)
+```
+
+#Predicted total points for each player in the fwd_data dataset
+```{r}
+predictz.fwd <- predict(bestfwd_model)
+```
+
+#Plots comparing the predicted values to the studentized and standard residuals
+```{r}
+plot(predictz.fwd, data.stresid.fwd)
+plot(predictz.fwd, data.resid.fwd)
+```
+#If the model fits well there should be no patterns present for either of the predictors and as can be seen by the plots there does not seem to be any distinct trends
+
+#Normal Q-Q Plot
+```{r}
+qqnorm(data.rstudent.fwd, pch=20)
+qqline(data.rstudent.fwd, col="blue")
+```
+
+#Histogram
+```{r}
+hist(data.rstudent.fwd) #histogram
+```
+
+
+#We see a very consistent issue happening to all of our models. Our r^2 is overfitting our data with it essentially being a value of 1. Then, all of our models are having qq plots and histograms that are reflecting that there is not normal distribution. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
