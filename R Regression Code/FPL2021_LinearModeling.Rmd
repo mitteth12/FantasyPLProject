@@ -244,16 +244,52 @@ predictz[321]
 NewFPL2021 <- read_csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
 ```
 
+```{r}
+plot(best2021_model$fitted.values, data.rstudent)
+abline(h=0)
+```
 
+#Might have a slight fan-shape here so lets see what a natural log transformation does to this model
 
+```{r}
+library(SciViews)
+NewFPL2021 <- filter(NewFPL2021, total_points > 0)
+lmbest_model <- lm(ln(total_points) ~ assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=NewFPL2021)
+summary(lmbest_model)
+```
 
+```{r}
+tresid1 <- rstudent(lmbest_model)
+par(mfrow = c(1,2))
+qqnorm(tresid1, pch=20)
+qqline(tresid1, col="blue")
+hist(tresid1)
+plot(lmbest_model$fitted.values, tresid1, pch=20)
+abline(h=0)
+plot(tresid1, type="o", pch=20)
+abline(h=0)
+```
 
+#Some major problems have resulted from taking a natural log of the data. Although we do not have a fan shape anymore we have a lot of outlying points and all of our assumptions are not met. Let's keep trying some different models.
 
+```{r}
+sqrt_model <- lm(sqrt(total_points) ~ assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=NewFPL2021)
+summary(sqrt_model)
+```
 
+```{r}
+tresid2 <- rstudent(sqrt_model)
+par(mfrow = c(1,2))
+qqnorm(tresid2, pch=20)
+qqline(tresid2, col="blue")
+hist(tresid2)
+plot(sqrt_model$fitted.values, tresid2, pch=20)
+abline(h=0)
+plot(tresid2, type="o", pch=20)
+abline(h=0)
+```
 
-
-
-
+#Still some issues with normality and linearity.
 
 
 
