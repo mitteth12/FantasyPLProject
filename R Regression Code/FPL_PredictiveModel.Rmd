@@ -13,96 +13,96 @@ library(tidyverse)
 
 ```{r}
 #Load in Beginning Data
-train <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLTrainModel.csv")
 FPL_1920 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2019-20/players_raw.csv")
 FPL_2021 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+NewFPL2021 <- read_csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
 ```
 
 ```{r}
-#Select certain values for using the model
-FPL_1920 <- FPL_1920 %>% select(total_points, assists, bonus, bps, clean_sheets, goals_scored, influence, saves, threat, minutes)
-```
+FPL_1920 <- FPL_1920 %>% filter(total_points > 0)
+FPL_1920 <- FPL_1920 %>% filter(assists > 0)
+FPL_1920 <- FPL_1920 %>% filter(bonus > 0)
+FPL_1920 <- FPL_1920 %>% filter(bps > 0)
+FPL_1920 <- FPL_1920 %>% filter(goals_scored > 0)
+FPL_1920 <- FPL_1920 %>% filter(influence > 0)
+FPL_1920 <- FPL_1920 %>% filter(threat > 0)
+FPL_1920 <- FPL_1920 %>% filter(minutes > 0)
 
-```{r}
-#Rename columns in dataset
-names(FPL_1920)[names(FPL_1920) == "total_points"] <- "total.points"
-names(FPL_1920)[names(FPL_1920) == "assists"] <- "assists."
-names(FPL_1920)[names(FPL_1920) == "bonus"] <- "bonus."
-names(FPL_1920)[names(FPL_1920) == "bps"] <- "bps."
-names(FPL_1920)[names(FPL_1920) == "clean_sheets"] <- "clean.sheets"
-names(FPL_1920)[names(FPL_1920) == "goals_scored"] <- "goals.scored"
-names(FPL_1920)[names(FPL_1920) == "influence"] <- "influence."
-names(FPL_1920)[names(FPL_1920) == "saves"] <- "saves."
-names(FPL_1920)[names(FPL_1920) == "threat"] <- "threat."
-names(FPL_1920)[names(FPL_1920) == "minutes"] <- "minutes."
+NewFPL2021 <- NewFPL2021 %>% filter(total_points > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(assists > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(bonus > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(bps > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(goals_scored > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(influence > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(threat > 0)
+NewFPL2021 <- NewFPL2021 %>% filter(minutes > 0)
 ```
 
 
 ```{r}
 #Make linear regression model based on best model from other markdown sheet
-model <- lm(total.points ~ assists. + bonus. + bps. + clean.sheets + goals.scored + influence. + saves. + threat. + minutes. , data = train)
+library(SciViews)
+model <- lm(ln(total_points) ~ scale(assists) + scale(bonus) + scale(bps) + scale(goals_scored) + scale(influence) + scale(threat) + scale(minutes) , data = NewFPL2021)
 summary(model)
 ```
 
 ```{r}
-#Look at the histogram for model residuals
-ggplot(data=train, aes(model$residuals)) +
-geom_histogram(binwidth = 1, color = "black", fill = "purple2") +
-theme(panel.background = element_rect(fill = "white"),
-axis.line.x=element_line(),
-axis.line.y=element_line()) +
-ggtitle("Histogram for Model Residuals")
+#Assumption Modeling
+tresid1 <- rstudent(model)
+par(mfrow = c(1,2))
+qqnorm(tresid1, pch=20)
+qqline(tresid1, col="blue")
+hist(tresid1)
+plot(model$fitted.values, tresid1, pch=20)
+abline(h=0)
+plot(tresid1, type="o", pch=20)
+abline(h=0)
+```
+
+
+
+```{r}
+FPL_1920$scale_assists <- scale(FPL_1920$assists)
+FPL_1920$scale_bonus <- scale(FPL_1920$bonus)
+FPL_1920$scale_bps <- scale(FPL_1920$bps)
+FPL_1920$scale_goals_scored <- scale(FPL_1920$goals_scored)
+FPL_1920$scale_influence <- scale(FPL_1920$influence)
+FPL_1920$scale_threat <- scale(FPL_1920$threat)
+FPL_1920$scale_minutes <- scale(FPL_1920$minutes)
+FPL_1920$ln_totalpoints <- ln(FPL_1920$total_points)
+```
+
+```{r}
+New1920 <- FPL_1920 %>% select(c(scale_assists, scale_bonus, scale_bps, scale_goals_scored, scale_influence, scale_threat, scale_minutes, ln_totalpoints, first_name, second_name))
+```
+
+```{r}
+#Rename columns in dataset
+names(New1920)[names(New1920) == "ln_totalpoints"] <- "total_points"
+names(New1920)[names(New1920) == "scale_assists"] <- "assists"
+names(New1920)[names(New1920) == "scale_bonus"] <- "bonus"
+names(New1920)[names(New1920) == "scale_bps"] <- "bps"
+names(New1920)[names(New1920) == "scale_goals_scored"] <- "goals_scored"
+names(New1920)[names(New1920) == "scale_influence"] <- "influence"
+names(New1920)[names(New1920) == "scale_threat"] <- "threat"
+names(New1920)[names(New1920) == "scale_minutes"] <- "minutes"
 ```
 
 
 ```{r}
 #Predict values for 2019-20 season
-prediction_1920 <- predict(model, newdata = FPL_1920)
-FPL_1920$prediction <- round(prediction_1920,0)
-FPL_1920$difference <- round((FPL_1920$prediction - FPL_1920$total.points),0)
+prediction1920 <- predict(model, newdata = New1920)
+New1920$prediction <- round(prediction1920,2)
+New1920$difference <- round((New1920$prediction - (New1920$total_points)),2)
 ```
 
 
 ```{r}
 #Look at distribution of difference values for 2019-20
-ggplot(FPL_1920, aes(x=difference)) +
+ggplot(New1920, aes(x=difference)) +
   geom_boxplot()
 
-mean(FPL_1920$difference)
-```
-
-#Testing Current Year (Will Need to Go Back and Clean the Current Cumulative Year so That Name is Invovled)
-#This model will only predict what each player should be at for gameweek 7 not where they will end up....
-
-```{r}
-FPL_2021 <- FPL_2021 %>% select(total_points, assists, bonus, bps, clean_sheets, goals_scored, influence, saves, threat, minutes)
-```
-
-```{r}
-names(FPL_2021)[names(FPL_2021) == "total_points"] <- "total.points"
-names(FPL_2021)[names(FPL_2021) == "assists"] <- "assists."
-names(FPL_2021)[names(FPL_2021) == "bonus"] <- "bonus."
-names(FPL_2021)[names(FPL_2021) == "bps"] <- "bps."
-names(FPL_2021)[names(FPL_2021) == "clean_sheets"] <- "clean.sheets"
-names(FPL_2021)[names(FPL_2021) == "goals_scored"] <- "goals.scored"
-names(FPL_2021)[names(FPL_2021) == "influence"] <- "influence."
-names(FPL_2021)[names(FPL_2021) == "saves"] <- "saves."
-names(FPL_2021)[names(FPL_2021) == "threat"] <- "threat."
-names(FPL_2021)[names(FPL_2021) == "minutes"] <- "minutes."
-```
-
-```{r}
-prediction_2021 <- predict(model, newdata = FPL_2021)
-FPL_2021$prediction <- round(prediction_2021,0)
-FPL_2021$difference <- round((FPL_2021$prediction - FPL_2021$total.points),0)
-```
-
-
-```{r}
-ggplot(FPL_2021, aes(x=difference)) +
-  geom_boxplot()
-
-mean(FPL_2021$difference)
+mean(New1920$difference)
 ```
 
 ```{r}
@@ -110,37 +110,67 @@ FPL_2122 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data
 ```
 
 ```{r}
-names(FPL_2122)[names(FPL_2122) == "total_points"] <- "total.points"
-names(FPL_2122)[names(FPL_2122) == "assists"] <- "assists."
-names(FPL_2122)[names(FPL_2122) == "bonus"] <- "bonus."
-names(FPL_2122)[names(FPL_2122) == "bps"] <- "bps."
-names(FPL_2122)[names(FPL_2122) == "clean_sheets"] <- "clean.sheets"
-names(FPL_2122)[names(FPL_2122) == "goals_scored"] <- "goals.scored"
-names(FPL_2122)[names(FPL_2122) == "influence"] <- "influence."
-names(FPL_2122)[names(FPL_2122) == "saves"] <- "saves."
-names(FPL_2122)[names(FPL_2122) == "threat"] <- "threat."
-names(FPL_2122)[names(FPL_2122) == "minutes"] <- "minutes."
+FPL_2122 <- FPL_2122 %>% select(-c(clean.sheets, saves.))
 ```
 
 ```{r}
-prediction_2122 <- predict(model, newdata = FPL_2122)
-FPL_2122$prediction <- round(prediction_2122,0)
-FPL_2122$difference <- round((FPL_2122$prediction - FPL_2122$total.points),0)
+FPL_2122 <- FPL_2122 %>% filter(total.points > 0)
+FPL_2122 <- FPL_2122 %>% filter(assists. > 0)
+FPL_2122 <- FPL_2122 %>% filter(bonus. > 0)
+FPL_2122 <- FPL_2122 %>% filter(bps. > 0)
+FPL_2122 <- FPL_2122 %>% filter(goals.scored > 0)
+FPL_2122 <- FPL_2122 %>% filter(influence. > 0)
+FPL_2122 <- FPL_2122 %>% filter(threat. > 0)
+FPL_2122 <- FPL_2122 %>% filter(minutes. > 0)
+```
+
+```{r}
+FPL_2122$scale_assists <- scale(FPL_2122$assists.)
+FPL_2122$scale_bonus <- scale(FPL_2122$bonus.)
+FPL_2122$scale_bps <- scale(FPL_2122$bps.)
+FPL_2122$scale_goals_scored <- scale(FPL_2122$goals.scored)
+FPL_2122$scale_influence <- scale(FPL_2122$influence.)
+FPL_2122$scale_threat <- scale(FPL_2122$threat.)
+FPL_2122$scale_minutes <- scale(FPL_2122$minutes.)
+FPL_2122$ln_totalpoints <- ln(FPL_2122$total.points)
+```
+
+```{r}
+New2122 <- FPL_2122 %>% select(c(scale_assists, scale_bonus, scale_bps, scale_goals_scored, scale_influence, scale_threat, scale_minutes, ln_totalpoints, name))
+```
+
+```{r}
+names(New2122)[names(New2122) == "ln_totalpoints"] <- "total_points"
+names(New2122)[names(New2122) == "scale_assists"] <- "assists"
+names(New2122)[names(New2122) == "scale_bonus"] <- "bonus"
+names(New2122)[names(New2122) == "scale_bps"] <- "bps"
+names(New2122)[names(New2122) == "scale_goals_scored"] <- "goals_scored"
+names(New2122)[names(New2122) == "scale_influence"] <- "influence"
+names(New2122)[names(New2122) == "scale_threat"] <- "threat"
+names(New2122)[names(New2122) == "scale_minutes"] <- "minutes"
+```
+
+```{r}
+prediction_2122 <- predict(model, newdata = New2122)
+New2122$prediction <- round(prediction_2122,3)
+New2122$difference <- round((New2122$prediction - New2122$total_points),3)
 ```
 
 
 ```{r}
-ggplot(FPL_2122, aes(x=difference)) +
+ggplot(New2122, aes(x=difference)) +
   geom_boxplot()
 
-mean(FPL_2122$difference)
+mean(New2122$difference)
 ```
 
 #Looking at the model I can use the difference column to see who is projected to have more points than they have at the moment. Gabriel Jesus is at the top of the list with surprisingly Michail Antonio. I have overlooked Antonio as I felt he was overhyped, but so far the data is suggesting good things from both of these players. In terms of who has the highest projected points. My team holds five of the top 20 projected players in it. 
 
 ```{r}
 gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
-#gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
+gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
+gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw10.csv")
+#gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -148,51 +178,101 @@ gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021
 ```{r}
 #Make a function to quickly select only the columns we want from each dataset
 gameweek_column_cleaner <- function(gameweek_variable) {
-  gameweek_variable %>% select(c(total_points,assists,bonus,bps,clean_sheets,goals_scored,influence,minutes,saves,threat,name)) 
+  gameweek_variable %>% select(c(total_points,assists,bonus,bps,goals_scored,influence,minutes,threat,name)) 
 }
 ```
 
 ```{r}
 #Put in gameweek
 
-gameweek_column_cleaner(gw8)
-#gameweek_column_cleaner(gw9)
+gw8 <- gameweek_column_cleaner(gw8)
+gw9 <- gameweek_column_cleaner(gw9)
+gw10 <- gameweek_column_cleaner(gw10)
+gw11 <- gameweek_column_cleaner(gw11)
 ```
+
+```{r}
+#Bring in Clean Dataset for 2021-22 Season
+Base_GW <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
+Base_GW <- Base_GW %>% select(-c(clean.sheets, saves.))
+```
+
+```{r}
+#Rename columns in dataset
+names(Base_GW)[names(Base_GW) == "total.points"] <- "total_points"
+names(Base_GW)[names(Base_GW) == "assists."] <- "assists"
+names(Base_GW)[names(Base_GW) == "bonus."] <- "bonus"
+names(Base_GW)[names(Base_GW) == "bps."] <- "bps"
+names(Base_GW)[names(Base_GW) == "goals.scored"] <- "goals_scored"
+names(Base_GW)[names(Base_GW) == "influence."] <- "influence"
+names(Base_GW)[names(Base_GW) == "threat."] <- "threat"
+names(Base_GW)[names(Base_GW) == "minutes."] <- "minutes"
+```
+
 
 ```{r}
 #Keep adding to make next projections
-gw8_projections <- FPL_2122 %>% inner_join(gw8, by="name")
-#gw9_projections <- gw8 %>% inner_join(gw8_projections, by= "name")
+gw8_projections <- rbind(Base_GW, gw8)
+gw9_projections <- rbind(gw8_projections, gw9)
+gw10_projections <- rbind(gw9_projections, gw10)
+#gw11_projections <- rbind(gw10_projections, gw11)
 
 #Current Week's Projection Model
-X = gw8_projections
+X = gw11_projections
 ```
 
 ```{r}
-#Rename columns to fit model
-names(X)[names(X) == "total_points"] <- "total.points"
-names(X)[names(X) == "assists"] <- "assists."
-names(X)[names(X) == "bonus"] <- "bonus."
-names(X)[names(X) == "bps"] <- "bps."
-names(X)[names(X) == "clean_sheets"] <- "clean.sheets"
-names(X)[names(X) == "goals_scored"] <- "goals.scored"
-names(X)[names(X) == "influence"] <- "influence."
-names(X)[names(X) == "saves"] <- "saves."
-names(X)[names(X) == "threat"] <- "threat."
-names(X)[names(X) == "minutes"] <- "minutes."
+#Take Out 0 values for natural log scaling
+X <- X %>% filter(total_points > 0)
+X <- X %>% filter(assists > 0)
+X <- X %>% filter(bonus > 0)
+X <- X %>% filter(bps > 0)
+X <- X %>% filter(goals_scored > 0)
+X <- X %>% filter(influence > 0)
+X <- X %>% filter(threat > 0)
+X <- X %>% filter(minutes > 0)
+```
+
+```{r}
+#Make new columns for scaled variables
+X$scale_assists <- scale(X$assists)
+X$scale_bonus <- scale(X$bonus)
+X$scale_bps <- scale(X$bps)
+X$scale_goals_scored <- scale(X$goals_scored)
+X$scale_influence <- scale(X$influence)
+X$scale_threat <- scale(X$threat)
+X$scale_minutes <- scale(X$minutes)
+X$ln_totalpoints <- ln(X$total_points)
+```
+
+```{r}
+#Only Take Scaled Variables for XX dataset
+XX <- X %>% select(c(scale_assists, scale_bonus, scale_bps, scale_goals_scored, scale_influence, scale_threat, scale_minutes, ln_totalpoints, name))
+```
+
+```{r}
+#Rename Columns 
+names(XX)[names(XX) == "ln_totalpoints"] <- "total_points"
+names(XX)[names(XX) == "scale_assists"] <- "assists"
+names(XX)[names(XX) == "scale_bonus"] <- "bonus"
+names(XX)[names(XX) == "scale_bps"] <- "bps"
+names(XX)[names(XX) == "scale_goals_scored"] <- "goals_scored"
+names(XX)[names(XX) == "scale_influence"] <- "influence"
+names(XX)[names(XX) == "scale_threat"] <- "threat"
+names(XX)[names(XX) == "scale_minutes"] <- "minutes"
 ```
 
 ```{r}
 #Model Predictions for Each Current Gameweek
-live_predictions <- predict(model, newdata = X)
-X$prediction <- round(live_predictions,0)
-X$difference <- round((X$prediction - X$total.points),0)
+live_predictions <- predict(model, newdata = XX)
+XX$prediction <- round(live_predictions,3)
+XX$difference <- round((XX$prediction - XX$total_points),3)
 ```
 
 
 ```{r}
 #Graph and Evaluate Each Weeks Performance
-ggplot(X, aes(x=difference)) +
+ggplot(XX, aes(x=difference)) +
   geom_boxplot()
 
 mean(X$difference)
@@ -204,8 +284,25 @@ Week 8
 
 Week 9
 
+#The model has been changed and is following a scaled transformation for now, so what is seen is that some players that are expected to score more points are:
+
+*Dennis
+*Kane 
+*McGinn
+*Smith-Rowe
+*Salah
+*Keita
+*Bailey
+*Richarlison
+*Jones
+*Werner
+*Foden
+
+#We will see how this players trend in the coming weeks and how this list moves
 
 Week 10...
+
+#A lot of movement this week and Jarrod Bowen for West Ham takes a clear number one spot with his residual value being one. Dennis, Kane, McGinn and Smith-Rowe continue to be up there. Ronaldo has also pushed his way into the conversation as well, so we will continue to keep track of these players. More closely we will keep track of Bowen, McGinn and Smith-Rowe as we are most concerned with midfielders.
 
 
 
