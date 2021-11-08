@@ -188,7 +188,7 @@ gameweek_column_cleaner <- function(gameweek_variable) {
 gw8 <- gameweek_column_cleaner(gw8)
 gw9 <- gameweek_column_cleaner(gw9)
 gw10 <- gameweek_column_cleaner(gw10)
-gw11 <- gameweek_column_cleaner(gw11)
+#gw11 <- gameweek_column_cleaner(gw11)
 ```
 
 ```{r}
@@ -218,7 +218,7 @@ gw10_projections <- rbind(gw9_projections, gw10)
 #gw11_projections <- rbind(gw10_projections, gw11)
 
 #Current Week's Projection Model
-X = gw11_projections
+X = gw10_projections
 ```
 
 ```{r}
