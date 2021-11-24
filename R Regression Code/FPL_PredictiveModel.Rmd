@@ -170,7 +170,9 @@ mean(New2122$difference)
 gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
 gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
 gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw10.csv")
-#gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
+gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
+gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
+#gw13<- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -188,7 +190,9 @@ gameweek_column_cleaner <- function(gameweek_variable) {
 gw8 <- gameweek_column_cleaner(gw8)
 gw9 <- gameweek_column_cleaner(gw9)
 gw10 <- gameweek_column_cleaner(gw10)
-#gw11 <- gameweek_column_cleaner(gw11)
+gw11 <- gameweek_column_cleaner(gw11)
+gw12 <- gameweek_column_cleaner(gw12)
+#gw13 <- gameweek_column_cleaner(gw13)
 ```
 
 ```{r}
@@ -215,10 +219,12 @@ names(Base_GW)[names(Base_GW) == "minutes."] <- "minutes"
 gw8_projections <- rbind(Base_GW, gw8)
 gw9_projections <- rbind(gw8_projections, gw9)
 gw10_projections <- rbind(gw9_projections, gw10)
-#gw11_projections <- rbind(gw10_projections, gw11)
+gw11_projections <- rbind(gw10_projections, gw11)
+gw12_projections <- rbind(gw11_projections, gw12)
+#gw13_projections <- rbind(gw12_projections, gw13)
 
 #Current Week's Projection Model
-X = gw10_projections
+X = gw12_projections
 ```
 
 ```{r}
@@ -304,6 +310,15 @@ Week 10...
 
 #A lot of movement this week and Jarrod Bowen for West Ham takes a clear number one spot with his residual value being one. Dennis, Kane, McGinn and Smith-Rowe continue to be up there. Ronaldo has also pushed his way into the conversation as well, so we will continue to keep track of these players. More closely we will keep track of Bowen, McGinn and Smith-Rowe as we are most concerned with midfielders.
 
+
+Week 11...
+
+#Jarrod Bowen got two assists this week and still looks to be evaluated by the model as continuing to keep this going with the statistics he has going. Dennis from Watford also is predicted to be doing better. Some other players to watch out for are Ronaldo, Kane and Trent Alexander-Arnold. Ronaldo and Kane are really expensive picks to randomly get and Alexander-Arnold is already in the side. Smith Rowe continues to do good as ever since he has been predicted to do good he has scored a goal in each week which is cool to see. My success story of the model.
+
+
+Week 12...
+
+#Saint-Maximin really jumped and is now first in the difference between predicted and actual. I have him in fantasy and hopefully this turns into more results rather than what it could also turn into which is just unproduction from Saint-Maximin. Bowen and Dennis are still high up on the ranks. Ronaldo Kane and Trent are also still up at the top. The only one that really has not produced out of the names listed is Kane, so interesting to see if he starting picking it up. Will continue to keep an eye on Bowen and how he does compared to his teammate Benrahama 
 
 
 
