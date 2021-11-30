@@ -47,6 +47,11 @@ summary(model)
 ```
 
 ```{r}
+#Make linear regression model for non-scaled data
+model1 <- lm(total_points ~ assists + bonus + bps + goals_scored + influence + threat + minutes, data = NewFPL2021)
+```
+
+```{r}
 #Assumption Modeling
 tresid1 <- rstudent(model)
 par(mfrow = c(1,2))
@@ -167,12 +172,14 @@ mean(New2122$difference)
 #Looking at the model I can use the difference column to see who is projected to have more points than they have at the moment. Gabriel Jesus is at the top of the list with surprisingly Michail Antonio. I have overlooked Antonio as I felt he was overhyped, but so far the data is suggesting good things from both of these players. In terms of who has the highest projected points. My team holds five of the top 20 projected players in it. 
 
 ```{r}
+#Insert in New Gameweeks
 gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
 gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
 gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw10.csv")
 gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
 gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
-#gw13<- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
+gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
+#gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -186,13 +193,14 @@ gameweek_column_cleaner <- function(gameweek_variable) {
 
 ```{r}
 #Put in gameweek
-
 gw8 <- gameweek_column_cleaner(gw8)
 gw9 <- gameweek_column_cleaner(gw9)
 gw10 <- gameweek_column_cleaner(gw10)
 gw11 <- gameweek_column_cleaner(gw11)
 gw12 <- gameweek_column_cleaner(gw12)
-#gw13 <- gameweek_column_cleaner(gw13)
+gw13 <- gameweek_column_cleaner(gw13)
+#gw14 <- gameweek_column_cleaner(gw14)
+
 ```
 
 ```{r}
@@ -221,51 +229,47 @@ gw9_projections <- rbind(gw8_projections, gw9)
 gw10_projections <- rbind(gw9_projections, gw10)
 gw11_projections <- rbind(gw10_projections, gw11)
 gw12_projections <- rbind(gw11_projections, gw12)
-#gw13_projections <- rbind(gw12_projections, gw13)
+gw13_projections <- rbind(gw12_projections, gw13)
+#gw14_projections <- rbind(gw13_projections, gw14)
 
 #Current Week's Projection Model
-X = gw12_projections
+X = gw13_projections
+```
+
+```{r}
+#Accumulated Total for Columns
+X <- X %>% 
+    group_by(name) %>% 
+    summarise_each(list(sum))
+```
+
+```{r}
+#Duplicate X dataset for scaled (XX) dataset
+XX = X
 ```
 
 ```{r}
 #Take Out 0 values for natural log scaling
-X <- X %>% filter(total_points > 0)
-X <- X %>% filter(assists > 0)
-X <- X %>% filter(bonus > 0)
-X <- X %>% filter(bps > 0)
-X <- X %>% filter(goals_scored > 0)
-X <- X %>% filter(influence > 0)
-X <- X %>% filter(threat > 0)
-X <- X %>% filter(minutes > 0)
+XX <- XX %>% filter(total_points > 0)
+XX <- XX %>% filter(assists > 0)
+XX <- XX %>% filter(bonus > 0)
+XX <- XX %>% filter(bps > 0)
+XX <- XX %>% filter(goals_scored > 0)
+XX <- XX %>% filter(influence > 0)
+XX <- XX %>% filter(threat > 0)
+XX <- XX %>% filter(minutes > 0)
 ```
 
 ```{r}
 #Make new columns for scaled variables
-X$scale_assists <- scale(X$assists)
-X$scale_bonus <- scale(X$bonus)
-X$scale_bps <- scale(X$bps)
-X$scale_goals_scored <- scale(X$goals_scored)
-X$scale_influence <- scale(X$influence)
-X$scale_threat <- scale(X$threat)
-X$scale_minutes <- scale(X$minutes)
-X$ln_totalpoints <- ln(X$total_points)
-```
-
-```{r}
-#Only Take Scaled Variables for XX dataset
-XX <- X %>% select(c(scale_assists, scale_bonus, scale_bps, scale_goals_scored, scale_influence, scale_threat, scale_minutes, ln_totalpoints, name))
-```
-
-```{r}
-#Rename Columns 
-names(XX)[names(XX) == "ln_totalpoints"] <- "total_points"
-names(XX)[names(XX) == "scale_assists"] <- "assists"
-names(XX)[names(XX) == "scale_bonus"] <- "bonus"
-names(XX)[names(XX) == "scale_bps"] <- "bps"
-names(XX)[names(XX) == "scale_goals_scored"] <- "goals_scored"
-names(XX)[names(XX) == "scale_influence"] <- "influence"
-names(XX)[names(XX) == "scale_threat"] <- "threat"
-names(XX)[names(XX) == "scale_minutes"] <- "minutes"
+XX$assists <- scale(XX$assists)
+XX$bonus <- scale(XX$bonus)
+XX$bps <- scale(XX$bps)
+XX$goals_scored <- scale(XX$goals_scored)
+XX$influence <- scale(XX$influence)
+XX$threat <- scale(XX$threat)
+XX$minutes <- scale(XX$minutes)
+XX$total_points <- ln(XX$total_points)
 ```
 
 ```{r}
@@ -273,6 +277,10 @@ names(XX)[names(XX) == "scale_minutes"] <- "minutes"
 live_predictions <- predict(model, newdata = XX)
 XX$prediction <- round(live_predictions,3)
 XX$difference <- round((XX$prediction - XX$total_points),3)
+
+live_predictions1 <- predict(model1, newdata = X)
+X$prediction <- round(live_predictions1,3)
+X$difference <- round((X$prediction - X$total_points),3)
 ```
 
 
@@ -281,8 +289,19 @@ XX$difference <- round((XX$prediction - XX$total_points),3)
 ggplot(XX, aes(x=difference)) +
   geom_boxplot()
 
-mean(X$difference)
+mean(XX$difference)
 ```
+```{r}
+#Keep Only the Most Current Observation for Each Player
+XX <- XX %>% distinct(name, .keep_all=TRUE)
+```
+
+```{r}
+#Take out duplicate name of Ben Davies (Sorry Both Ben Davies)
+XX <- subset(XX, name != "Ben Davies")
+X <- subset(X, name != "Ben Davies")
+```
+
 
 Week 8
 
@@ -319,6 +338,14 @@ Week 11...
 Week 12...
 
 #Saint-Maximin really jumped and is now first in the difference between predicted and actual. I have him in fantasy and hopefully this turns into more results rather than what it could also turn into which is just unproduction from Saint-Maximin. Bowen and Dennis are still high up on the ranks. Ronaldo Kane and Trent are also still up at the top. The only one that really has not produced out of the names listed is Kane, so interesting to see if he starting picking it up. Will continue to keep an eye on Bowen and how he does compared to his teammate Benrahama 
+
+Week 13...
+
+#I fixed the model to work how I want it to. It might take some modification of the original model that was used, but now we have two different modeling results to go off of which is great. I see Dennis high in both and although I personally do not know if much will come from that, getting Dennis gets me a chance to get Jota which using quantitative and qualitative data analytics since minutes is important and he plays on Liverpool he has an excellent opportunity to get points with the absence of Roberto Firmino.
+
+Week 14...
+
+#
 
 
 
