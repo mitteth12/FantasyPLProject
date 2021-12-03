@@ -179,7 +179,8 @@ gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
 gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
 gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
-#gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
+gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
+#gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -199,7 +200,8 @@ gw10 <- gameweek_column_cleaner(gw10)
 gw11 <- gameweek_column_cleaner(gw11)
 gw12 <- gameweek_column_cleaner(gw12)
 gw13 <- gameweek_column_cleaner(gw13)
-#gw14 <- gameweek_column_cleaner(gw14)
+gw14 <- gameweek_column_cleaner(gw14)
+#gw15 <- gameweek_column_cleaner(gw15)
 
 ```
 
@@ -230,10 +232,18 @@ gw10_projections <- rbind(gw9_projections, gw10)
 gw11_projections <- rbind(gw10_projections, gw11)
 gw12_projections <- rbind(gw11_projections, gw12)
 gw13_projections <- rbind(gw12_projections, gw13)
-#gw14_projections <- rbind(gw13_projections, gw14)
+gw14_projections <- rbind(gw13_projections, gw14)
+#gw15_projections <- rbind(gw14_projections, gw15)
 
 #Current Week's Projection Model
-X = gw13_projections
+X = gw14_projections
+```
+
+```{r}
+#Export X for Visualizations Purposes (Only Use For Updating Spreasdsheet/Do Only Once Every Two Months)
+#Once Spreadsheet is Written Make a Column for Amount of Gameweeks in Team so Size Can be Used in Tableau
+
+#write.csv(X,"~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/FPL21_22LiveStats.csv", row.names = FALSE)
 ```
 
 ```{r}
@@ -344,6 +354,10 @@ Week 13...
 #I fixed the model to work how I want it to. It might take some modification of the original model that was used, but now we have two different modeling results to go off of which is great. I see Dennis high in both and although I personally do not know if much will come from that, getting Dennis gets me a chance to get Jota which using quantitative and qualitative data analytics since minutes is important and he plays on Liverpool he has an excellent opportunity to get points with the absence of Roberto Firmino.
 
 Week 14...
+
+#Vardy definitely looks to be the notable player out of this list that I do not have. Smith Rowe is still a player that is doing great in real life and on the predictive modeling, so trying to find a way to fit him in would be good thing. Interestingly enough Emmanuel Dennis actually scored against Chelsea and got 9 points in gameweek 13, so he is giving hope to this model doing a good job. Obviously, there are a lot of unpredictables, but these stats give a better pool too choose from. Bernardo Silva is definitely someone to keep an eye on, but salary seems to be an issue for the squad with having spent so much on my back line. 
+
+Week 15...
 
 #
 
