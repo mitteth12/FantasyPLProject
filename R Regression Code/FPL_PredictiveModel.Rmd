@@ -180,7 +180,8 @@ gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
 gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
 gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
-#gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
+gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
+#gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -201,7 +202,8 @@ gw11 <- gameweek_column_cleaner(gw11)
 gw12 <- gameweek_column_cleaner(gw12)
 gw13 <- gameweek_column_cleaner(gw13)
 gw14 <- gameweek_column_cleaner(gw14)
-#gw15 <- gameweek_column_cleaner(gw15)
+gw15 <- gameweek_column_cleaner(gw15)
+#gw16 <- gameweek_column_cleaner(gw16)
 
 ```
 
@@ -233,10 +235,11 @@ gw11_projections <- rbind(gw10_projections, gw11)
 gw12_projections <- rbind(gw11_projections, gw12)
 gw13_projections <- rbind(gw12_projections, gw13)
 gw14_projections <- rbind(gw13_projections, gw14)
-#gw15_projections <- rbind(gw14_projections, gw15)
+gw15_projections <- rbind(gw14_projections, gw15)
+#gw16_projections <- rbind(gw15_projections, gw16)
 
 #Current Week's Projection Model
-X = gw14_projections
+X = gw15_projections
 ```
 
 ```{r}
@@ -358,6 +361,10 @@ Week 14...
 #Vardy definitely looks to be the notable player out of this list that I do not have. Smith Rowe is still a player that is doing great in real life and on the predictive modeling, so trying to find a way to fit him in would be good thing. Interestingly enough Emmanuel Dennis actually scored against Chelsea and got 9 points in gameweek 13, so he is giving hope to this model doing a good job. Obviously, there are a lot of unpredictables, but these stats give a better pool too choose from. Bernardo Silva is definitely someone to keep an eye on, but salary seems to be an issue for the squad with having spent so much on my back line. 
 
 Week 15...
+
+#Dennis has stayed high up on the list and there is big momentum for Bernardo Silva and Mason Mount. Both players have flown up the charts and are now in the top 5 for predicted scorers. It looks like there are actually quite a few picks that have jumped over Emile Smith Rowe. However, Smith Rowe was injured the last game. Bernardo Silva seems to be the player to keep an eye on moving forward. 
+
+Week 16...
 
 #
 
