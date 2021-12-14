@@ -1,5 +1,5 @@
 ---
-title: "FPL Ten Gameweek Predictive Model"
+title: "FPL Gameweek Predictive Model"
 author: "Ethan Mitten"
 date: "10/13/2021"
 output: html_document
@@ -181,7 +181,8 @@ gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
 gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
 gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
-#gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
+gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
+#gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -203,7 +204,8 @@ gw12 <- gameweek_column_cleaner(gw12)
 gw13 <- gameweek_column_cleaner(gw13)
 gw14 <- gameweek_column_cleaner(gw14)
 gw15 <- gameweek_column_cleaner(gw15)
-#gw16 <- gameweek_column_cleaner(gw16)
+gw16 <- gameweek_column_cleaner(gw16)
+#gw17 <- gameweek_column_cleaner(gw17)
 
 ```
 
@@ -236,10 +238,11 @@ gw12_projections <- rbind(gw11_projections, gw12)
 gw13_projections <- rbind(gw12_projections, gw13)
 gw14_projections <- rbind(gw13_projections, gw14)
 gw15_projections <- rbind(gw14_projections, gw15)
-#gw16_projections <- rbind(gw15_projections, gw16)
+gw16_projections <- rbind(gw15_projections, gw16)
+#gw17_projections <- rbind(gw16_projections, gw17)
 
 #Current Week's Projection Model
-X = gw15_projections
+X = gw16_projections
 ```
 
 ```{r}
@@ -365,6 +368,10 @@ Week 15...
 #Dennis has stayed high up on the list and there is big momentum for Bernardo Silva and Mason Mount. Both players have flown up the charts and are now in the top 5 for predicted scorers. It looks like there are actually quite a few picks that have jumped over Emile Smith Rowe. However, Smith Rowe was injured the last game. Bernardo Silva seems to be the player to keep an eye on moving forward. 
 
 Week 16...
+
+#Bernardo Silva continues to rise along with Conor Gallagher. Antonio seems to still be a good buy, but I do not have the funds at the moment. Its a short turnaround to gameweek 17, so we are going to just hold and watch how things unfold and dissect a little more after.
+
+Week 17...
 
 #
 
