@@ -182,7 +182,8 @@ gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
 gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
 gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
-#gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
+gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
+#gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -205,7 +206,8 @@ gw13 <- gameweek_column_cleaner(gw13)
 gw14 <- gameweek_column_cleaner(gw14)
 gw15 <- gameweek_column_cleaner(gw15)
 gw16 <- gameweek_column_cleaner(gw16)
-#gw17 <- gameweek_column_cleaner(gw17)
+gw17 <- gameweek_column_cleaner(gw17)
+#gw18 <- gameweek_column_cleaner(gw18)
 
 ```
 
@@ -239,10 +241,11 @@ gw13_projections <- rbind(gw12_projections, gw13)
 gw14_projections <- rbind(gw13_projections, gw14)
 gw15_projections <- rbind(gw14_projections, gw15)
 gw16_projections <- rbind(gw15_projections, gw16)
-#gw17_projections <- rbind(gw16_projections, gw17)
+gw17_projections <- rbind(gw16_projections, gw17)
+#gw18_projections <- rbind(gw17_projections, gw18)
 
 #Current Week's Projection Model
-X = gw16_projections
+X = gw17_projections
 ```
 
 ```{r}
@@ -373,7 +376,7 @@ Week 16...
 
 Week 17...
 
-#
+#Mason Mount is now the 3rd most valuable player in our model for points. Gallagher continues to stay high up on the charts. Not much else has changed other than Smith Rowe rising as well.
 
 
 
