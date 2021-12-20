@@ -183,7 +183,8 @@ gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
 gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
 gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
-#gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
+gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
+#gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -207,7 +208,8 @@ gw14 <- gameweek_column_cleaner(gw14)
 gw15 <- gameweek_column_cleaner(gw15)
 gw16 <- gameweek_column_cleaner(gw16)
 gw17 <- gameweek_column_cleaner(gw17)
-#gw18 <- gameweek_column_cleaner(gw18)
+gw18 <- gameweek_column_cleaner(gw18)
+#gw19 <- gameweek_column_cleaner(gw19)
 
 ```
 
@@ -242,10 +244,11 @@ gw14_projections <- rbind(gw13_projections, gw14)
 gw15_projections <- rbind(gw14_projections, gw15)
 gw16_projections <- rbind(gw15_projections, gw16)
 gw17_projections <- rbind(gw16_projections, gw17)
-#gw18_projections <- rbind(gw17_projections, gw18)
+gw18_projections <- rbind(gw17_projections, gw18)
+#gw19_projections <- rbind(gw18_projections, gw19)
 
 #Current Week's Projection Model
-X = gw17_projections
+X = gw18_projections
 ```
 
 ```{r}
@@ -377,6 +380,10 @@ Week 16...
 Week 17...
 
 #Mason Mount is now the 3rd most valuable player in our model for points. Gallagher continues to stay high up on the charts. Not much else has changed other than Smith Rowe rising as well.
+
+Week 18...
+
+#Given that there were only five games this gameweek there is not a lot to takeaway. With that there also was not very much movement in the players. Raphnina went up the charts, but he also had a game this weekend where as players like Tielemans did not. Our players that we have plucked from continue to be at the top of these lists.
 
 
 
