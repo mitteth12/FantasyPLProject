@@ -110,15 +110,15 @@ get_cv_error <- function(model.formula, data){
 
 ```{r}
 # Compute cross-validation error
-model.ids <- 1:14
-cv.errors <-  map(model.ids, get_model_formula, model_2021, "total_points") %>%
-  map(get_cv_error, data = FPL2021_minusppg) %>%
-  unlist()
-cv.errors
+#model.ids <- 1:14
+#cv.errors <-  map(model.ids, get_model_formula, model_2021, "total_points") %>%
+  #map(get_cv_error, data = FPL2021_minusppg) %>%
+  #unlist()
+#cv.errors
 ```
 ```{r}
 # Select the model that minimize the CV error
-which.min(cv.errors)
+#which.min(cv.errors)
 ```
 
 ```{r}
@@ -290,6 +290,39 @@ abline(h=0)
 ```
 
 #Still some issues with normality and linearity.
+
+```{r}
+example_model1 <- lm(total_points ~ assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=NewFPL2021)
+
+wts <- 1/fitted(lm(abs(residuals(example_model1)) ~ fitted(example_model1)))^2
+
+example_model <- lm(total_points ~ assists + bonus + bps + clean_sheets + goals_scored + influence + minutes + saves + threat, data=NewFPL2021, weights = wts)
+```
+
+```{r}
+summary(example_model)
+```
+
+
+```{r}
+tresid3 <- rstudent(example_model)
+par(mfrow = c(1,2))
+qqnorm(tresid3, pch=20)
+qqline(tresid3, col="blue")
+hist(tresid3)
+plot(example_model$fitted.values, tresid3, pch=20)
+abline(h=0)
+plot(tresid3, type="o", pch=20)
+abline(h=0)
+```
+
+
+
+
+
+
+
+
 
 
 

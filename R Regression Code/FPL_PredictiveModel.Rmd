@@ -29,20 +29,25 @@ FPL_1920 <- FPL_1920 %>% filter(threat > 0)
 FPL_1920 <- FPL_1920 %>% filter(minutes > 0)
 
 NewFPL2021 <- NewFPL2021 %>% filter(total_points > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(assists > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(bonus > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(bps > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(goals_scored > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(influence > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(threat > 0)
-NewFPL2021 <- NewFPL2021 %>% filter(minutes > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(assists > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(bonus > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(bps > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(goals_scored > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(influence > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(threat > 0)
+#NewFPL2021 <- NewFPL2021 %>% filter(minutes > 0)
 ```
 
 
 ```{r}
 #Make linear regression model based on best model from other markdown sheet
 library(SciViews)
-model <- lm(ln(total_points) ~ scale(assists) + scale(bonus) + scale(bps) + scale(goals_scored) + scale(influence) + scale(threat) + scale(minutes) , data = NewFPL2021)
+
+example_model1 <- lm(total_points ~ assists + bonus + bps + goals_scored + influence + minutes + threat, data=NewFPL2021)
+
+wts <- 1/fitted(lm(abs(residuals(example_model1)) ~ fitted(example_model1)))^2
+
+model <- lm(total_points ~ assists + bonus + bps + goals_scored + influence + minutes+ threat, data=NewFPL2021, weights = wts)
 summary(model)
 ```
 
@@ -96,18 +101,18 @@ names(New1920)[names(New1920) == "scale_minutes"] <- "minutes"
 
 ```{r}
 #Predict values for 2019-20 season
-prediction1920 <- predict(model, newdata = New1920)
-New1920$prediction <- round(prediction1920,2)
-New1920$difference <- round((New1920$prediction - (New1920$total_points)),2)
+#prediction1920 <- predict(model, newdata = New1920)
+#New1920$prediction <- round(prediction1920,2)
+#New1920$difference <- round((New1920$prediction - (New1920$total_points)),2)
 ```
 
 
 ```{r}
 #Look at distribution of difference values for 2019-20
-ggplot(New1920, aes(x=difference)) +
-  geom_boxplot()
+#ggplot(New1920, aes(x=difference)) +
+  #geom_boxplot()
 
-mean(New1920$difference)
+#mean(New1920$difference)
 ```
 
 ```{r}
@@ -156,17 +161,17 @@ names(New2122)[names(New2122) == "scale_minutes"] <- "minutes"
 ```
 
 ```{r}
-prediction_2122 <- predict(model, newdata = New2122)
-New2122$prediction <- round(prediction_2122,3)
-New2122$difference <- round((New2122$prediction - New2122$total_points),3)
+#prediction_2122 <- predict(model, newdata = New2122)
+#New2122$prediction <- round(prediction_2122,3)
+#New2122$difference <- round((New2122$prediction - New2122$total_points),3)
 ```
 
 
 ```{r}
-ggplot(New2122, aes(x=difference)) +
-  geom_boxplot()
+#ggplot(New2122, aes(x=difference)) +
+  #geom_boxplot()
 
-mean(New2122$difference)
+#mean(New2122$difference)
 ```
 
 #Looking at the model I can use the difference column to see who is projected to have more points than they have at the moment. Gabriel Jesus is at the top of the list with surprisingly Michail Antonio. I have overlooked Antonio as I felt he was overhyped, but so far the data is suggesting good things from both of these players. In terms of who has the highest projected points. My team holds five of the top 20 projected players in it. 
@@ -184,7 +189,9 @@ gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
 gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
 gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
-#gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
+gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
+gw20 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw20.csv")
+#gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -209,7 +216,9 @@ gw15 <- gameweek_column_cleaner(gw15)
 gw16 <- gameweek_column_cleaner(gw16)
 gw17 <- gameweek_column_cleaner(gw17)
 gw18 <- gameweek_column_cleaner(gw18)
-#gw19 <- gameweek_column_cleaner(gw19)
+gw19 <- gameweek_column_cleaner(gw19)
+gw20 <- gameweek_column_cleaner(gw20)
+#gw21 <- gameweek_column_cleaner(gw21)
 
 ```
 
@@ -245,10 +254,12 @@ gw15_projections <- rbind(gw14_projections, gw15)
 gw16_projections <- rbind(gw15_projections, gw16)
 gw17_projections <- rbind(gw16_projections, gw17)
 gw18_projections <- rbind(gw17_projections, gw18)
-#gw19_projections <- rbind(gw18_projections, gw19)
+gw19_projections <- rbind(gw18_projections, gw19)
+gw20_projections <- rbind(gw19_projections, gw20)
+#gw21_projections <- rbind(gw20_projections, gw21)
 
 #Current Week's Projection Model
-X = gw18_projections
+XX = gw20_projections
 ```
 
 ```{r}
@@ -260,38 +271,33 @@ X = gw18_projections
 
 ```{r}
 #Accumulated Total for Columns
-X <- X %>% 
+XX <- XX %>% 
     group_by(name) %>% 
     summarise_each(list(sum))
 ```
 
 ```{r}
-#Duplicate X dataset for scaled (XX) dataset
-XX = X
-```
-
-```{r}
 #Take Out 0 values for natural log scaling
 XX <- XX %>% filter(total_points > 0)
-XX <- XX %>% filter(assists > 0)
-XX <- XX %>% filter(bonus > 0)
-XX <- XX %>% filter(bps > 0)
-XX <- XX %>% filter(goals_scored > 0)
-XX <- XX %>% filter(influence > 0)
-XX <- XX %>% filter(threat > 0)
-XX <- XX %>% filter(minutes > 0)
+#XX <- XX %>% filter(assists > 0)
+#XX <- XX %>% filter(bonus > 0)
+#XX <- XX %>% filter(bps > 0)
+#XX <- XX %>% filter(goals_scored > 0)
+#XX <- XX %>% filter(influence > 0)
+#XX <- XX %>% filter(threat > 0)
+#XX <- XX %>% filter(minutes > 0)
 ```
 
 ```{r}
 #Make new columns for scaled variables
-XX$assists <- scale(XX$assists)
-XX$bonus <- scale(XX$bonus)
-XX$bps <- scale(XX$bps)
-XX$goals_scored <- scale(XX$goals_scored)
-XX$influence <- scale(XX$influence)
-XX$threat <- scale(XX$threat)
-XX$minutes <- scale(XX$minutes)
-XX$total_points <- ln(XX$total_points)
+#XX$assists <- scale(XX$assists)
+#XX$bonus <- scale(XX$bonus)
+#XX$bps <- scale(XX$bps)
+#XX$goals_scored <- scale(XX$goals_scored)
+#XX$influence <- scale(XX$influence)
+#XX$threat <- scale(XX$threat)
+#XX$minutes <- scale(XX$minutes)
+#XX$total_points <- ln(XX$total_points)
 ```
 
 ```{r}
@@ -299,10 +305,6 @@ XX$total_points <- ln(XX$total_points)
 live_predictions <- predict(model, newdata = XX)
 XX$prediction <- round(live_predictions,3)
 XX$difference <- round((XX$prediction - XX$total_points),3)
-
-live_predictions1 <- predict(model1, newdata = X)
-X$prediction <- round(live_predictions1,3)
-X$difference <- round((X$prediction - X$total_points),3)
 ```
 
 
@@ -321,7 +323,6 @@ XX <- XX %>% distinct(name, .keep_all=TRUE)
 ```{r}
 #Take out duplicate name of Ben Davies (Sorry Both Ben Davies)
 XX <- subset(XX, name != "Ben Davies")
-X <- subset(X, name != "Ben Davies")
 ```
 
 
@@ -385,6 +386,13 @@ Week 18...
 
 #Given that there were only five games this gameweek there is not a lot to takeaway. With that there also was not very much movement in the players. Raphnina went up the charts, but he also had a game this weekend where as players like Tielemans did not. Our players that we have plucked from continue to be at the top of these lists.
 
+Week 19...
+
+#Mason Mount is someone that is really on my radar now and trying to find a way to get him into my side might be a postive move for the club. On the other hand, he has some bye weeks coming up as well as some bad matchups, so he could be an option to choose from in a couple of weeks from now. I think we are just going to hold tight. The only players that seem to be in contention for changing is Smith Rowe and Tielemans, but they have both been doing great when they have been playing.
+
+Week 20...
+
+#Not much movement other than Jarrod Bowen is continuing to climb. It is a little tough to really make too many interpretations as a lot of games are getting cancelled with covid, so some players are able to develop more statistics to help themselves climb the model. Once the games are balanced out again we will be able to get a more clear picture. 
 
 
 
