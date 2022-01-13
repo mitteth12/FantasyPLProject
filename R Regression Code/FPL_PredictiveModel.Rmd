@@ -191,7 +191,8 @@ gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
 gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
 gw20 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw20.csv")
-#gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
+gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
+#gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -218,7 +219,8 @@ gw17 <- gameweek_column_cleaner(gw17)
 gw18 <- gameweek_column_cleaner(gw18)
 gw19 <- gameweek_column_cleaner(gw19)
 gw20 <- gameweek_column_cleaner(gw20)
-#gw21 <- gameweek_column_cleaner(gw21)
+gw21 <- gameweek_column_cleaner(gw21)
+#gw22 <- gameweek_column_cleaner(gw22)
 
 ```
 
@@ -256,10 +258,11 @@ gw17_projections <- rbind(gw16_projections, gw17)
 gw18_projections <- rbind(gw17_projections, gw18)
 gw19_projections <- rbind(gw18_projections, gw19)
 gw20_projections <- rbind(gw19_projections, gw20)
-#gw21_projections <- rbind(gw20_projections, gw21)
+gw21_projections <- rbind(gw20_projections, gw21)
+#gw22_projections <- rbind(gw21_projections, gw22)
 
 #Current Week's Projection Model
-XX = gw20_projections
+XX = gw21_projections
 ```
 
 ```{r}
@@ -313,7 +316,7 @@ XX$difference <- round((XX$prediction - XX$total_points),3)
 ggplot(XX, aes(x=difference)) +
   geom_boxplot()
 
-mean(XX$difference)
+median(XX$difference)
 ```
 ```{r}
 #Keep Only the Most Current Observation for Each Player
@@ -328,11 +331,11 @@ XX <- subset(XX, name != "Ben Davies")
 
 Week 8
 
-#Still has similar people holding the highest predictive differences. Gabriel Jesus, Michail Antonio, Romelu Lukaku...
+## Still has similar people holding the highest predictive differences. Gabriel Jesus, Michail Antonio, Romelu Lukaku...
 
 Week 9
 
-#The model has been changed and is following a scaled transformation for now, so what is seen is that some players that are expected to score more points are:
+## The model has been changed and is following a scaled transformation for now, so what is seen is that some players that are expected to score more points are:
 
 *Dennis
 *Kane 
@@ -346,53 +349,59 @@ Week 9
 *Werner
 *Foden
 
-#We will see how this players trend in the coming weeks and how this list moves
+## We will see how this players trend in the coming weeks and how this list moves
 
 Week 10...
 
-#A lot of movement this week and Jarrod Bowen for West Ham takes a clear number one spot with his residual value being one. Dennis, Kane, McGinn and Smith-Rowe continue to be up there. Ronaldo has also pushed his way into the conversation as well, so we will continue to keep track of these players. More closely we will keep track of Bowen, McGinn and Smith-Rowe as we are most concerned with midfielders.
+## A lot of movement this week and Jarrod Bowen for West Ham takes a clear number one spot with his residual value being one. Dennis, Kane, McGinn and Smith-Rowe continue to be up there. Ronaldo has also pushed his way into the conversation as well, so we will continue to keep track of these players. More closely we will keep track of Bowen, McGinn and Smith-Rowe as we are most concerned with midfielders.
 
 
 Week 11...
 
-#Jarrod Bowen got two assists this week and still looks to be evaluated by the model as continuing to keep this going with the statistics he has going. Dennis from Watford also is predicted to be doing better. Some other players to watch out for are Ronaldo, Kane and Trent Alexander-Arnold. Ronaldo and Kane are really expensive picks to randomly get and Alexander-Arnold is already in the side. Smith Rowe continues to do good as ever since he has been predicted to do good he has scored a goal in each week which is cool to see. My success story of the model.
+## Jarrod Bowen got two assists this week and still looks to be evaluated by the model as continuing to keep this going with the statistics he has going. Dennis from Watford also is predicted to be doing better. Some other players to watch out for are Ronaldo, Kane and Trent Alexander-Arnold. Ronaldo and Kane are really expensive picks to randomly get and Alexander-Arnold is already in the side. Smith Rowe continues to do good as ever since he has been predicted to do good he has scored a goal in each week which is cool to see. My success story of the model.
 
 
 Week 12...
 
-#Saint-Maximin really jumped and is now first in the difference between predicted and actual. I have him in fantasy and hopefully this turns into more results rather than what it could also turn into which is just unproduction from Saint-Maximin. Bowen and Dennis are still high up on the ranks. Ronaldo Kane and Trent are also still up at the top. The only one that really has not produced out of the names listed is Kane, so interesting to see if he starting picking it up. Will continue to keep an eye on Bowen and how he does compared to his teammate Benrahama 
+## Saint-Maximin really jumped and is now first in the difference between predicted and actual. I have him in fantasy and hopefully this turns into more results rather than what it could also turn into which is just unproduction from Saint-Maximin. Bowen and Dennis are still high up on the ranks. Ronaldo Kane and Trent are also still up at the top. The only one that really has not produced out of the names listed is Kane, so interesting to see if he starting picking it up. Will continue to keep an eye on Bowen and how he does compared to his teammate Benrahama 
 
 Week 13...
 
-#I fixed the model to work how I want it to. It might take some modification of the original model that was used, but now we have two different modeling results to go off of which is great. I see Dennis high in both and although I personally do not know if much will come from that, getting Dennis gets me a chance to get Jota which using quantitative and qualitative data analytics since minutes is important and he plays on Liverpool he has an excellent opportunity to get points with the absence of Roberto Firmino.
+## I fixed the model to work how I want it to. It might take some modification of the original model that was used, but now we have two different modeling results to go off of which is great. I see Dennis high in both and although I personally do not know if much will come from that, getting Dennis gets me a chance to get Jota which using quantitative and qualitative data analytics since minutes is important and he plays on Liverpool he has an excellent opportunity to get points with the absence of Roberto Firmino.
 
 Week 14...
 
-#Vardy definitely looks to be the notable player out of this list that I do not have. Smith Rowe is still a player that is doing great in real life and on the predictive modeling, so trying to find a way to fit him in would be good thing. Interestingly enough Emmanuel Dennis actually scored against Chelsea and got 9 points in gameweek 13, so he is giving hope to this model doing a good job. Obviously, there are a lot of unpredictables, but these stats give a better pool too choose from. Bernardo Silva is definitely someone to keep an eye on, but salary seems to be an issue for the squad with having spent so much on my back line. 
+## Vardy definitely looks to be the notable player out of this list that I do not have. Smith Rowe is still a player that is doing great in real life and on the predictive modeling, so trying to find a way to fit him in would be good thing. Interestingly enough Emmanuel Dennis actually scored against Chelsea and got 9 points in gameweek 13, so he is giving hope to this model doing a good job. Obviously, there are a lot of unpredictables, but these stats give a better pool too choose from. Bernardo Silva is definitely someone to keep an eye on, but salary seems to be an issue for the squad with having spent so much on my back line. 
 
 Week 15...
 
-#Dennis has stayed high up on the list and there is big momentum for Bernardo Silva and Mason Mount. Both players have flown up the charts and are now in the top 5 for predicted scorers. It looks like there are actually quite a few picks that have jumped over Emile Smith Rowe. However, Smith Rowe was injured the last game. Bernardo Silva seems to be the player to keep an eye on moving forward. 
+## Dennis has stayed high up on the list and there is big momentum for Bernardo Silva and Mason Mount. Both players have flown up the charts and are now in the top 5 for predicted scorers. It looks like there are actually quite a few picks that have jumped over Emile Smith Rowe. However, Smith Rowe was injured the last game. Bernardo Silva seems to be the player to keep an eye on moving forward. 
 
 Week 16...
 
-#Bernardo Silva continues to rise along with Conor Gallagher. Antonio seems to still be a good buy, but I do not have the funds at the moment. Its a short turnaround to gameweek 17, so we are going to just hold and watch how things unfold and dissect a little more after.
+## Bernardo Silva continues to rise along with Conor Gallagher. Antonio seems to still be a good buy, but I do not have the funds at the moment. Its a short turnaround to gameweek 17, so we are going to just hold and watch how things unfold and dissect a little more after.
 
 Week 17...
 
-#Mason Mount is now the 3rd most valuable player in our model for points. Gallagher continues to stay high up on the charts. Not much else has changed other than Smith Rowe rising as well.
+## Mason Mount is now the 3rd most valuable player in our model for points. Gallagher continues to stay high up on the charts. Not much else has changed other than Smith Rowe rising as well.
 
 Week 18...
 
-#Given that there were only five games this gameweek there is not a lot to takeaway. With that there also was not very much movement in the players. Raphnina went up the charts, but he also had a game this weekend where as players like Tielemans did not. Our players that we have plucked from continue to be at the top of these lists.
+## Given that there were only five games this gameweek there is not a lot to takeaway. With that there also was not very much movement in the players. Raphnina went up the charts, but he also had a game this weekend where as players like Tielemans did not. Our players that we have plucked from continue to be at the top of these lists.
 
 Week 19...
 
-#Mason Mount is someone that is really on my radar now and trying to find a way to get him into my side might be a postive move for the club. On the other hand, he has some bye weeks coming up as well as some bad matchups, so he could be an option to choose from in a couple of weeks from now. I think we are just going to hold tight. The only players that seem to be in contention for changing is Smith Rowe and Tielemans, but they have both been doing great when they have been playing.
+## Mason Mount is someone that is really on my radar now and trying to find a way to get him into my side might be a postive move for the club. On the other hand, he has some bye weeks coming up as well as some bad matchups, so he could be an option to choose from in a couple of weeks from now. I think we are just going to hold tight. The only players that seem to be in contention for changing is Smith Rowe and Tielemans, but they have both been doing great when they have been playing.
 
 Week 20...
 
-#Not much movement other than Jarrod Bowen is continuing to climb. It is a little tough to really make too many interpretations as a lot of games are getting cancelled with covid, so some players are able to develop more statistics to help themselves climb the model. Once the games are balanced out again we will be able to get a more clear picture. 
+## Not much movement other than Jarrod Bowen is continuing to climb. It is a little tough to really make too many interpretations as a lot of games are getting cancelled with covid, so some players are able to develop more statistics to help themselves climb the model. Once the games are balanced out again we will be able to get a more clear picture. 
+
+Week 21...
+
+## The one thing that is very obvious and sticks out is how much Jarrod Bowen is producing. The frustrating part is I have been writing about Bowen since Week 10 now and he has constantly been doing better and better and I still have not put him in the team. Having him in earlier could have really been beneficial, but regardless he is going in the team now. Besides Bowen not a whole lot of movement is seen. Dennis went down a bit this week, but everyone is pretty consistent. It looks like Rudiger may have jumped some placements as well.
+
+Week 22...
 
 
 
