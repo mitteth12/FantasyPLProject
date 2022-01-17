@@ -261,6 +261,8 @@ gw20_projections <- rbind(gw19_projections, gw20)
 gw21_projections <- rbind(gw20_projections, gw21)
 #gw22_projections <- rbind(gw21_projections, gw22)
 
+#Last Week's Project Model
+X = gw20_projections
 #Current Week's Projection Model
 XX = gw21_projections
 ```
@@ -277,11 +279,16 @@ XX = gw21_projections
 XX <- XX %>% 
     group_by(name) %>% 
     summarise_each(list(sum))
+
+X <- X %>% 
+    group_by(name) %>% 
+    summarise_each(list(sum))
 ```
 
 ```{r}
 #Take Out 0 values for natural log scaling
 XX <- XX %>% filter(total_points > 0)
+X <- X %>% filter(total_points > 0)
 #XX <- XX %>% filter(assists > 0)
 #XX <- XX %>% filter(bonus > 0)
 #XX <- XX %>% filter(bps > 0)
@@ -308,6 +315,10 @@ XX <- XX %>% filter(total_points > 0)
 live_predictions <- predict(model, newdata = XX)
 XX$prediction <- round(live_predictions,3)
 XX$difference <- round((XX$prediction - XX$total_points),3)
+
+live_predictions1 <- predict(model, newdata = X)
+X$prediction <- round(live_predictions1,3)
+X$difference <- round((X$prediction - X$total_points),3)
 ```
 
 
@@ -321,13 +332,68 @@ median(XX$difference)
 ```{r}
 #Keep Only the Most Current Observation for Each Player
 XX <- XX %>% distinct(name, .keep_all=TRUE)
+X <- X %>% distinct(name, .keep_all =TRUE)
 ```
 
 ```{r}
 #Take out duplicate name of Ben Davies (Sorry Both Ben Davies)
 XX <- subset(XX, name != "Ben Davies")
+X <- subset(X, name != "Ben Davies")
 ```
 
+```{r}
+#https://stackoverflow.com/questions/26423493/r-rank-largest-to-smallest
+XX$Rank <- round(rank(-XX$prediction),0)
+X$Rank <- round(rank(-X$prediction),0)
+
+XX$actual_rank <- round(rank(-XX$total_points),0)
+```
+
+```{r}
+#New Dataset to Subtract Ranks From Gameweeks
+XXX <- inner_join(XX,X, by="name")
+XXX <- XXX %>% select(c(name,total_points.x,assists.x,bonus.x,bps.x,goals_scored.x,influence.x,minutes.x,threat.x,prediction.x,difference.x,actual_rank,Rank.x,Rank.y))
+```
+
+```{r}
+#Subtract Ranks
+#GW_Change is difference in PREDICTED ranks from gameweek to gameweek
+XXX$GW_Change <- XXX$Rank.y - XXX$Rank.x
+```
+
+```{r}
+#Final Clean Dataset to Look At
+Final_Data <- XXX %>% select(-c(Rank.y))
+
+names(Final_Data)[names(Final_Data) == "total_points.x"] <- "total_points"
+names(Final_Data)[names(Final_Data) == "assists.x"] <- "assists"
+names(Final_Data)[names(Final_Data) == "bonus.x"] <- "bonus"
+names(Final_Data)[names(Final_Data) == "bps.x"] <- "bps"
+names(Final_Data)[names(Final_Data) == "goals_scored.x"] <- "goals_scored"
+names(Final_Data)[names(Final_Data) == "influence.x"] <- "influence"
+names(Final_Data)[names(Final_Data) == "threat.x"] <- "threat"
+names(Final_Data)[names(Final_Data) == "minutes.x"] <- "minutes"
+names(Final_Data)[names(Final_Data) == "prediction.x"] <- "prediction"
+names(Final_Data)[names(Final_Data) == "difference.x"] <- "difference"
+names(Final_Data)[names(Final_Data) == "Rank.x"] <- "predicted_rank"
+names(Final_Data)[names(Final_Data) == "GW_Change"] <- "predicted_gw_change"
+
+Final_Data$total_contributions <- Final_Data$assists + Final_Data$goals_scored
+```
+
+```{r}
+#Load in some player data
+player_info <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/fplplayer_info.csv")
+```
+
+```{r}
+Final_Data <- left_join(Final_Data,player_info, by="name")
+Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions))
+```
+
+```{r}
+sum(is.na(Final_Data$squad))
+```
 
 Week 8
 
