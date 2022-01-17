@@ -3,3 +3,7 @@
 
 
 Data Provided By: https://github.com/vaastav/Fantasy-Premier-League
+
+Another great help for analyzing the data was for player information. This information included their names, positions and squad. The source of the data is linked below.
+
+Data Provided By: https://fbref.com/en/comps/9/stats/Premier-League-Stats
