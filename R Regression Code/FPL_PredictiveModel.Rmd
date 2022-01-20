@@ -192,7 +192,8 @@ gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
 gw20 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw20.csv")
 gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
-#gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
+gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
+#gw23 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -220,7 +221,8 @@ gw18 <- gameweek_column_cleaner(gw18)
 gw19 <- gameweek_column_cleaner(gw19)
 gw20 <- gameweek_column_cleaner(gw20)
 gw21 <- gameweek_column_cleaner(gw21)
-#gw22 <- gameweek_column_cleaner(gw22)
+gw22 <- gameweek_column_cleaner(gw22)
+#gw23 <- gameweek_column_cleaner(gw23)
 
 ```
 
@@ -259,12 +261,13 @@ gw18_projections <- rbind(gw17_projections, gw18)
 gw19_projections <- rbind(gw18_projections, gw19)
 gw20_projections <- rbind(gw19_projections, gw20)
 gw21_projections <- rbind(gw20_projections, gw21)
-#gw22_projections <- rbind(gw21_projections, gw22)
+gw22_projections <- rbind(gw21_projections, gw22)
+#gw23_projections <- rbind(gw22_projections, gw23)
 
 #Last Week's Project Model
-X = gw20_projections
+X = gw21_projections
 #Current Week's Projection Model
-XX = gw21_projections
+XX = gw22_projections
 ```
 
 ```{r}
@@ -351,6 +354,7 @@ XX$actual_rank <- round(rank(-XX$total_points),0)
 
 ```{r}
 #New Dataset to Subtract Ranks From Gameweeks
+#This Join Means That Players That Are New Will Not Be Added to Dataset Until After They Play in Two Gameweeks
 XXX <- inner_join(XX,X, by="name")
 XXX <- XXX %>% select(c(name,total_points.x,assists.x,bonus.x,bps.x,goals_scored.x,influence.x,minutes.x,threat.x,prediction.x,difference.x,actual_rank,Rank.x,Rank.y))
 ```
@@ -387,8 +391,24 @@ player_info <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_D
 ```
 
 ```{r}
+#Join in player info data
 Final_Data <- left_join(Final_Data,player_info, by="name")
 Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions))
+```
+
+```{r}
+#rank_difference is difference in actual rank vs. predicted rank for current gameweek
+Final_Data$rank_difference <- Final_Data$actual_rank - Final_Data$predicted_rank
+```
+
+```{r}
+#Quickly Reorganize Final Data Spreadsheet One More Time
+Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,rank_difference,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions))
+```
+
+```{r}
+#Export Spreadsheet of Each Current Weeks New Predictions and Ranks (CHANGE EACH GAMEWEEK)
+write.csv(Final_Data, "~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/Ranks_and_Predictions_21-22/GW22_Update.csv")
 ```
 
 ```{r}
@@ -469,6 +489,7 @@ Week 21...
 
 Week 22...
 
+## In our newly update version of this it looks like there is not a whole lot of movement. One player that has moved a little bit upwards was Bruno Fernandes this week who we did pick up. Ward-Prowse has really driven himself high up on the ranks as well. Somebody to watch for as well.
 
 
 
