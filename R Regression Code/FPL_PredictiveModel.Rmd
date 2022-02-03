@@ -393,7 +393,7 @@ player_info <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_D
 ```{r}
 #Join in player info data
 Final_Data <- left_join(Final_Data,player_info, by="name")
-Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions))
+Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions,caps_for_fpl))
 ```
 
 ```{r}
@@ -403,16 +403,18 @@ Final_Data$rank_difference <- Final_Data$actual_rank - Final_Data$predicted_rank
 
 ```{r}
 #Quickly Reorganize Final Data Spreadsheet One More Time
-Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,rank_difference,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions))
+Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,rank_difference,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions,caps_for_fpl))
 ```
 
 ```{r}
 #Export Spreadsheet of Each Current Weeks New Predictions and Ranks (CHANGE EACH GAMEWEEK)
-write.csv(Final_Data, "~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/Ranks_and_Predictions_21-22/GW22_Update.csv")
+write.csv(Final_Data, "~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/Ranks_and_Predictions_21-22/GW23_Update.csv")
 ```
 
 ```{r}
-sum(is.na(Final_Data$squad))
+median_pos <- Final_Data %>% group_by(pos) %>% filter(pos != 'NA') %>% summarize(median(difference))
+totalpoints_squads <- Final_Data %>% group_by(squad) %>% filter(squad != 'NA') %>% summarize(mean(total_points))
+totalpoints_squads_pos <- Final_Data %>% group_by(squad,pos) %>% filter(squad != 'NA') %>% summarize(mean(total_points))
 ```
 
 Week 8
@@ -490,6 +492,8 @@ Week 21...
 Week 22...
 
 ## In our newly update version of this it looks like there is not a whole lot of movement. One player that has moved a little bit upwards was Bruno Fernandes this week who we did pick up. Ward-Prowse has really driven himself high up on the ranks as well. Somebody to watch for as well.
+
+Week 23...
 
 
 
