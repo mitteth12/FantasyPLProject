@@ -194,7 +194,8 @@ gw20 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
 gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
 gw23 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
-#gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
+gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
+#gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -224,7 +225,8 @@ gw20 <- gameweek_column_cleaner(gw20)
 gw21 <- gameweek_column_cleaner(gw21)
 gw22 <- gameweek_column_cleaner(gw22)
 gw23 <- gameweek_column_cleaner(gw23)
-#gw24 <- gameweek_column_cleaner(gw24)
+gw24 <- gameweek_column_cleaner(gw24)
+#gw25 <- gameweek_column_cleaner(gw25)
 
 ```
 
@@ -265,12 +267,13 @@ gw20_projections <- rbind(gw19_projections, gw20)
 gw21_projections <- rbind(gw20_projections, gw21)
 gw22_projections <- rbind(gw21_projections, gw22)
 gw23_projections <- rbind(gw22_projections, gw23)
-#gw24_projections <- rbind(gw23_projections, gw24)
+gw24_projections <- rbind(gw23_projections, gw24)
+#gw25_projections <- rbind(gw24_projections, gw25)
 
 #Last Week's Project Model
-X = gw22_projections
+X = gw23_projections
 #Current Week's Projection Model
-XX = gw23_projections
+XX = gw24_projections
 ```
 
 ```{r}
@@ -426,6 +429,146 @@ Final_DF <- Final_Data %>% filter(pos == 'DF')
 Final_FW <- Final_Data %>% filter(pos == 'FW')
 ```
 
+# Predictor for player form
+
+```{r}
+#Latest five projections; for each gameweek add and delete a gameweek
+gw20_projectionsA <- gw20
+gw21_projectionsA <- rbind(gw20_projectionsA, gw21)
+gw22_projectionsA <- rbind(gw21_projectionsA, gw22)
+gw23_projectionsA <- rbind(gw22_projectionsA, gw23)
+gw24_projectionsA <- rbind(gw23_projectionsA, gw24)
+#gw25_projectionsA <- rbind(gw_24projectionsA,gw24)
+
+#Last Week's Project Model
+Y = gw23_projectionsA
+#Current Week's Projection Model
+YY = gw24_projectionsA
+```
+
+```{r}
+#Accumulated Total for Columns
+YY <- YY %>% 
+    group_by(name) %>% 
+    summarise_each(list(sum))
+
+Y <- Y %>% 
+    group_by(name) %>% 
+    summarise_each(list(sum))
+```
+
+```{r}
+#Take Out 0 values for natural log scaling
+YY <- YY %>% filter(total_points > 0)
+Y <- Y %>% filter(total_points > 0)
+#XX <- XX %>% filter(assists > 0)
+#XX <- XX %>% filter(bonus > 0)
+#XX <- XX %>% filter(bps > 0)
+#XX <- XX %>% filter(goals_scored > 0)
+#XX <- XX %>% filter(influence > 0)
+#XX <- XX %>% filter(threat > 0)
+#XX <- XX %>% filter(minutes > 0)
+```
+
+```{r}
+#Make new columns for scaled variables
+#XX$assists <- scale(XX$assists)
+#XX$bonus <- scale(XX$bonus)
+#XX$bps <- scale(XX$bps)
+#XX$goals_scored <- scale(XX$goals_scored)
+#XX$influence <- scale(XX$influence)
+#XX$threat <- scale(XX$threat)
+#XX$minutes <- scale(XX$minutes)
+#XX$total_points <- ln(XX$total_points)
+```
+
+```{r}
+#Model Predictions for Each Current Gameweek
+live_predictionsA <- predict(model, newdata = YY)
+YY$prediction <- round(live_predictionsA,3)
+YY$difference <- round((YY$prediction - YY$total_points),3)
+
+live_predictions1A <- predict(model, newdata = Y)
+Y$prediction <- round(live_predictions1A,3)
+Y$difference <- round((Y$prediction - Y$total_points),3)
+```
+
+```{r}
+#Graph and Evaluate Each Weeks Performance
+ggplot(YY, aes(x=difference)) +
+  geom_boxplot()
+
+median(YY$difference)
+```
+
+```{r}
+#Keep Only the Most Current Observation for Each Player
+YY <- YY %>% distinct(name, .keep_all=TRUE)
+Y <- Y %>% distinct(name, .keep_all =TRUE)
+```
+
+```{r}
+#Take out duplicate name of Ben Davies (Sorry Both Ben Davies)
+YY <- subset(YY, name != "Ben Davies")
+Y <- subset(Y, name != "Ben Davies")
+```
+
+```{r}
+#https://stackoverflow.com/questions/26423493/r-rank-largest-to-smallest
+YY$Rank <- round(rank(-YY$prediction),0)
+Y$Rank <- round(rank(-Y$prediction),0)
+
+YY$actual_rank <- round(rank(-YY$total_points),0)
+```
+
+```{r}
+#New Dataset to Subtract Ranks From Gameweeks
+#This Join Means That Players That Are New Will Not Be Added to Dataset Until After They Play in Two Gameweeks
+YYY <- inner_join(YY,Y, by="name")
+YYY <- YYY %>% select(c(name,total_points.x,assists.x,bonus.x,bps.x,goals_scored.x,influence.x,minutes.x,threat.x,prediction.x,difference.x,actual_rank,Rank.x,Rank.y))
+```
+
+```{r}
+#Subtract Ranks
+#GW_Change is difference in PREDICTED ranks from gameweek to gameweek
+YYY$GW_Change <- YYY$Rank.y - YYY$Rank.x
+```
+
+```{r}
+#Final Clean Dataset to Look At
+Final_Data_Form <- YYY %>% select(-c(Rank.y))
+
+names(Final_Data_Form)[names(Final_Data_Form) == "total_points.x"] <- "total_points"
+names(Final_Data_Form)[names(Final_Data_Form) == "assists.x"] <- "assists"
+names(Final_Data_Form)[names(Final_Data_Form) == "bonus.x"] <- "bonus"
+names(Final_Data_Form)[names(Final_Data_Form) == "bps.x"] <- "bps"
+names(Final_Data_Form)[names(Final_Data_Form) == "goals_scored.x"] <- "goals_scored"
+names(Final_Data_Form)[names(Final_Data_Form) == "influence.x"] <- "influence"
+names(Final_Data_Form)[names(Final_Data_Form) == "threat.x"] <- "threat"
+names(Final_Data_Form)[names(Final_Data_Form) == "minutes.x"] <- "minutes"
+names(Final_Data_Form)[names(Final_Data_Form) == "prediction.x"] <- "prediction"
+names(Final_Data_Form)[names(Final_Data_Form) == "difference.x"] <- "difference"
+names(Final_Data_Form)[names(Final_Data_Form) == "Rank.x"] <- "predicted_rank"
+names(Final_Data_Form)[names(Final_Data_Form) == "GW_Change"] <- "predicted_gw_change"
+
+Final_Data_Form$total_contributions <- Final_Data_Form$assists + Final_Data_Form$goals_scored
+```
+
+```{r}
+#Join in player info data
+Final_Data_Form <- left_join(Final_Data_Form,player_info, by="name")
+Final_Data_Form <- Final_Data_Form %>% select(c(name,pos,squad,actual_rank,predicted_rank,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions,caps_for_fpl))
+```
+
+```{r}
+#rank_difference is difference in actual rank vs. predicted rank for current gameweek
+Final_Data_Form$rank_difference <- Final_Data_Form$actual_rank - Final_Data_Form$predicted_rank
+```
+
+```{r}
+#Quickly Reorganize Final Data Spreadsheet One More Time
+Final_Data_Form <- Final_Data_Form %>% select(c(name,pos,squad,actual_rank,predicted_rank,rank_difference,predicted_gw_change,total_points,prediction,difference,assists,bonus,bps,goals_scored,influence,minutes,threat,total_contributions,caps_for_fpl))
+```
 
 ## Week 8
 
@@ -509,7 +652,11 @@ Not too much movement going on this week. It can be seen that Andrew Robertson j
 
 ## Week 24...
 
- 
+Laporte and Diogo Jota are both on the move upwards. Will have to watch for them in the coming days. Other than that not too much movement going on besides Bernardo Silva slightly going down in the ranks. Might have to watch him the next couple of weeks. Might also be valuable to have a form predictor. In other words, who is at the top of the list based off of the last five games? I will make this and see what insights it might bring. Doesn't hurt to have more info available. I guess that is unless that info leads me in the wrong direction.
+
+## Week 25...
+
+
 
 
 
