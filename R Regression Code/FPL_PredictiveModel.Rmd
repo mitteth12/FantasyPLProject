@@ -195,7 +195,8 @@ gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
 gw23 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
 gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
-#gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
+gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
+#gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -226,7 +227,8 @@ gw21 <- gameweek_column_cleaner(gw21)
 gw22 <- gameweek_column_cleaner(gw22)
 gw23 <- gameweek_column_cleaner(gw23)
 gw24 <- gameweek_column_cleaner(gw24)
-#gw25 <- gameweek_column_cleaner(gw25)
+gw25 <- gameweek_column_cleaner(gw25)
+#gw26 <- gameweek_column_cleaner(gw26)
 
 ```
 
@@ -268,12 +270,13 @@ gw21_projections <- rbind(gw20_projections, gw21)
 gw22_projections <- rbind(gw21_projections, gw22)
 gw23_projections <- rbind(gw22_projections, gw23)
 gw24_projections <- rbind(gw23_projections, gw24)
-#gw25_projections <- rbind(gw24_projections, gw25)
+gw25_projections <- rbind(gw24_projections, gw25)
+#gw26_projections <- rbind(gw25_projections, gw26)
 
 #Last Week's Project Model
-X = gw23_projections
+X = gw24_projections
 #Current Week's Projection Model
-XX = gw24_projections
+XX = gw25_projections
 ```
 
 ```{r}
@@ -433,17 +436,17 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw20_projectionsA <- gw20
-gw21_projectionsA <- rbind(gw20_projectionsA, gw21)
+gw21_projectionsA <- rbind(gw21)
 gw22_projectionsA <- rbind(gw21_projectionsA, gw22)
 gw23_projectionsA <- rbind(gw22_projectionsA, gw23)
 gw24_projectionsA <- rbind(gw23_projectionsA, gw24)
-#gw25_projectionsA <- rbind(gw_24projectionsA,gw24)
+gw25_projectionsA <- rbind(gw24_projectionsA,gw25)
+#gw26_projectionsA <- rbind(gw_25projectionsA,gw26)
 
 #Last Week's Project Model
-Y = gw23_projectionsA
+Y = gw24_projectionsA
 #Current Week's Projection Model
-YY = gw24_projectionsA
+YY = gw25_projectionsA
 ```
 
 ```{r}
@@ -655,6 +658,10 @@ Not too much movement going on this week. It can be seen that Andrew Robertson j
 Laporte and Diogo Jota are both on the move upwards. Will have to watch for them in the coming days. Other than that not too much movement going on besides Bernardo Silva slightly going down in the ranks. Might have to watch him the next couple of weeks. Might also be valuable to have a form predictor. In other words, who is at the top of the list based off of the last five games? I will make this and see what insights it might bring. Doesn't hurt to have more info available. I guess that is unless that info leads me in the wrong direction.
 
 ## Week 25...
+
+Bernardo Silva, although at the top is not one of the players over the last five weeks who has been making any contributions. It might prove a bad idea to get rid of him in the team, but there is room to also add other people who might be doing just as good if not better than him. This one is a bit risky, but the data has shown that Coutinho coming to Aston Villa has been good for him and he is earning good points since starting. The logic is that people like Jack Harrison might have just found form, but Coutinho has only played about five games at Aston Villa and is at the top of the list from that. It tells me that this might have more longevity than someone like Jack Harrison. Jarrod Bowen has been so impressive and is now third behind the immovable Trent and Salah at the top. Bowen is a lock on midfielders and should be someone who continues to stay in the starting side. We still have the three best forwards in the league, but Maupay is high up there as well. Ward-Prowse is potentially someone to have eyes on in the next couple of weeks. Saka is pretty far down on the list of midfield choices, but with two games this upcoming gameweek he would be a good pick. 
+
+## Week 26...
 
 
 
