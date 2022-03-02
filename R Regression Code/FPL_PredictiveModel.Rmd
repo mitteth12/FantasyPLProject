@@ -196,7 +196,9 @@ gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw23 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
 gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
 gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
-#gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
+gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
+gw27 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw27.csv")
+#gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -228,7 +230,9 @@ gw22 <- gameweek_column_cleaner(gw22)
 gw23 <- gameweek_column_cleaner(gw23)
 gw24 <- gameweek_column_cleaner(gw24)
 gw25 <- gameweek_column_cleaner(gw25)
-#gw26 <- gameweek_column_cleaner(gw26)
+gw26 <- gameweek_column_cleaner(gw26)
+gw27 <- gameweek_column_cleaner(gw27)
+#gw28 <- gameweek_column_cleaner(gw28)
 
 ```
 
@@ -271,12 +275,14 @@ gw22_projections <- rbind(gw21_projections, gw22)
 gw23_projections <- rbind(gw22_projections, gw23)
 gw24_projections <- rbind(gw23_projections, gw24)
 gw25_projections <- rbind(gw24_projections, gw25)
-#gw26_projections <- rbind(gw25_projections, gw26)
+gw26_projections <- rbind(gw25_projections, gw26)
+gw27_projections <- rbind(gw26_projections, gw27)
+#gw28_projections <- rbind(gw27_projections, gw28)
 
 #Last Week's Project Model
-X = gw24_projections
+X = gw26_projections
 #Current Week's Projection Model
-XX = gw25_projections
+XX = gw27_projections
 ```
 
 ```{r}
@@ -436,17 +442,17 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw21_projectionsA <- rbind(gw21)
-gw22_projectionsA <- rbind(gw21_projectionsA, gw22)
-gw23_projectionsA <- rbind(gw22_projectionsA, gw23)
+gw23_projectionsA <- rbind(gw23)
 gw24_projectionsA <- rbind(gw23_projectionsA, gw24)
 gw25_projectionsA <- rbind(gw24_projectionsA,gw25)
-#gw26_projectionsA <- rbind(gw_25projectionsA,gw26)
+gw26_projectionsA <- rbind(gw25_projectionsA,gw26)
+gw27_projectionsA <- rbind(gw26_projectionsA,gw27)
+#gw28_projectionsA <- rbind(gw27_projectionsA,gw28)
 
 #Last Week's Project Model
-Y = gw24_projectionsA
+Y = gw26_projectionsA
 #Current Week's Projection Model
-YY = gw25_projectionsA
+YY = gw27_projectionsA
 ```
 
 ```{r}
@@ -663,7 +669,13 @@ Bernardo Silva, although at the top is not one of the players over the last five
 
 ## Week 26...
 
+The thing that stands out to me the most from gameweek 26 going into gameweek 28 since the window between 26 and 27 was so small is Ramsey. Aston Villa has a double gameweek this upcoming week and Ramsey's form is towards the top of the list. Harry Kane has also really climbed into form as of recently and although I do not know where the funds would come from it would be worth to just keep tabs on Kane. I have the top 5 players right now although, Robertson is predicted higher than Van Dijk. My forwards still look strong being in the top 3 still. My midfielders are the ones that are a little different at the moment. I have 3 of the top 8 best players available for midfielders which is great and then Coutinho and Ramsey which Ramsey is 7th in form and Coutinho is 22nd at the moment. Considering they both have a double gameweek coming up this is a good sign. The data suggests that things are going smoothly in terms of the development of my side and from the application side I would say that is accurate.
 
+## Week 27...
+
+We have an interesting list of names on the top of the form chart. A lot of these players are not seen in the final dataset. We are looking for a player who is in good form and is also towards the top of the final dataset list. It can be seen that Harry Kane is making a little movement up the list and is also number one in form at the moment. We do not see too much movement other than that especially considering that our lineup was already set for gw28 before this list was even run. Jacob Ramsey dropped off quite a bit from the form list which was the only thing we were basing our pick from. Coutinho still feels like a good pick, but not a whole lot is suggesting Ramsey will offer much. However, he is Aston Villa so he has a double gameweek and has been getting minutes, so worst case scenario he gets 3 or 4 points over this gameweek.
+
+## Week 28...
 
 
 
