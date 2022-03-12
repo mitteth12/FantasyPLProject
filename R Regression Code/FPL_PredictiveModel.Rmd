@@ -198,7 +198,8 @@ gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
 gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
 gw27 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw27.csv")
-#gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
+gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
+#gw29 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -232,7 +233,8 @@ gw24 <- gameweek_column_cleaner(gw24)
 gw25 <- gameweek_column_cleaner(gw25)
 gw26 <- gameweek_column_cleaner(gw26)
 gw27 <- gameweek_column_cleaner(gw27)
-#gw28 <- gameweek_column_cleaner(gw28)
+gw28 <- gameweek_column_cleaner(gw28)
+#gw29 <- gameweek_column_cleaner(gw29)
 
 ```
 
@@ -277,12 +279,13 @@ gw24_projections <- rbind(gw23_projections, gw24)
 gw25_projections <- rbind(gw24_projections, gw25)
 gw26_projections <- rbind(gw25_projections, gw26)
 gw27_projections <- rbind(gw26_projections, gw27)
-#gw28_projections <- rbind(gw27_projections, gw28)
+gw28_projections <- rbind(gw27_projections, gw28)
+#gw29_projections <- rbind(gw28_projections, gw29)
 
 #Last Week's Project Model
-X = gw26_projections
+X = gw27_projections
 #Current Week's Projection Model
-XX = gw27_projections
+XX = gw28_projections
 ```
 
 ```{r}
@@ -442,17 +445,17 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw23_projectionsA <- rbind(gw23)
-gw24_projectionsA <- rbind(gw23_projectionsA, gw24)
+gw24_projectionsA <- rbind(gw24)
 gw25_projectionsA <- rbind(gw24_projectionsA,gw25)
 gw26_projectionsA <- rbind(gw25_projectionsA,gw26)
 gw27_projectionsA <- rbind(gw26_projectionsA,gw27)
-#gw28_projectionsA <- rbind(gw27_projectionsA,gw28)
+gw28_projectionsA <- rbind(gw27_projectionsA,gw28)
+#gw29_projectionsA <- rbind(gw28_projectionsA,gw29)
 
 #Last Week's Project Model
-Y = gw26_projectionsA
+Y = gw27_projectionsA
 #Current Week's Projection Model
-YY = gw27_projectionsA
+YY = gw28_projectionsA
 ```
 
 ```{r}
@@ -676,6 +679,10 @@ The thing that stands out to me the most from gameweek 26 going into gameweek 28
 We have an interesting list of names on the top of the form chart. A lot of these players are not seen in the final dataset. We are looking for a player who is in good form and is also towards the top of the final dataset list. It can be seen that Harry Kane is making a little movement up the list and is also number one in form at the moment. We do not see too much movement other than that especially considering that our lineup was already set for gw28 before this list was even run. Jacob Ramsey dropped off quite a bit from the form list which was the only thing we were basing our pick from. Coutinho still feels like a good pick, but not a whole lot is suggesting Ramsey will offer much. However, he is Aston Villa so he has a double gameweek and has been getting minutes, so worst case scenario he gets 3 or 4 points over this gameweek.
 
 ## Week 28...
+
+Matty Cash and Coutinho were putting in good performances as of late. Had to make my lineup before I found this data, so not going to analyze too much this gameweek.
+
+## Week 29...
 
 
 
