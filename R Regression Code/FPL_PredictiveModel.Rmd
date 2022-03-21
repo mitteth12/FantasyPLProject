@@ -199,7 +199,9 @@ gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
 gw27 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw27.csv")
 gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
-#gw29 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
+gw29 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
+gw30 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw30.csv")
+#gw31 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -234,7 +236,9 @@ gw25 <- gameweek_column_cleaner(gw25)
 gw26 <- gameweek_column_cleaner(gw26)
 gw27 <- gameweek_column_cleaner(gw27)
 gw28 <- gameweek_column_cleaner(gw28)
-#gw29 <- gameweek_column_cleaner(gw29)
+gw29 <- gameweek_column_cleaner(gw29)
+gw30 <- gameweek_column_cleaner(gw30)
+#gw31 <- gameweek_column_cleaner(gw31)
 
 ```
 
@@ -280,12 +284,14 @@ gw25_projections <- rbind(gw24_projections, gw25)
 gw26_projections <- rbind(gw25_projections, gw26)
 gw27_projections <- rbind(gw26_projections, gw27)
 gw28_projections <- rbind(gw27_projections, gw28)
-#gw29_projections <- rbind(gw28_projections, gw29)
+gw29_projections <- rbind(gw28_projections, gw29)
+gw30_projections <- rbind(gw29_projections, gw30)
+#gw31_projections <- rbind(gw30_projections, gw31)
 
 #Last Week's Project Model
-X = gw27_projections
+X = gw29_projections
 #Current Week's Projection Model
-XX = gw28_projections
+XX = gw30_projections
 ```
 
 ```{r}
@@ -445,17 +451,17 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw24_projectionsA <- rbind(gw24)
-gw25_projectionsA <- rbind(gw24_projectionsA,gw25)
-gw26_projectionsA <- rbind(gw25_projectionsA,gw26)
+gw26_projectionsA <- rbind(gw26)
 gw27_projectionsA <- rbind(gw26_projectionsA,gw27)
 gw28_projectionsA <- rbind(gw27_projectionsA,gw28)
-#gw29_projectionsA <- rbind(gw28_projectionsA,gw29)
+gw29_projectionsA <- rbind(gw28_projectionsA,gw29)
+gw30_projectionsA <- rbind(gw29_projectionsA,gw30)
+#gw31_projectionsA <- rbind(gw30_projectionsA,gw31)
 
 #Last Week's Project Model
-Y = gw27_projectionsA
+Y = gw29_projectionsA
 #Current Week's Projection Model
-YY = gw28_projectionsA
+YY = gw30_projectionsA
 ```
 
 ```{r}
@@ -684,7 +690,13 @@ Matty Cash and Coutinho were putting in good performances as of late. Had to mak
 
 ## Week 29...
 
+It is interesting to see how form shifts from week to week. Kane, Kulusevski and Toney are the notable players. Kane has really worked his way up the actual final data charts as well. Toney has actually passed Dennis in the overall charts as well. Looking a little more in depth at positions we see Robertson has worked his way up into the top spots, but also Coady. For forwards Kane is now the top forward and Saint-Maximin has dropped a bit with being injured. The back half of the season has seen some shifts in the players taking the top spots. Not too much change has happened for the midfielders.
 
+## Week 30...
+
+Tottenham's striking force as a whole is very inform at the moment. The trio of Kane, Kulusevski and Son take the top three in-form players spots. Kane now moved into the top 5 for all top performers in the data. Kane is one that slipped away. Other people hopped on the inform play of Kane and I still couldn't see the pattern quick enough. It was going to be hard to bring in the funds to get him as well as finding the transfers to do it. However, it was a missed opportunity nonetheless and when it boils down to it those are mistakes that could dictate placement in the final stretch here. I think when analyzing movement I spent a little too much time looking at the top and not enough time in the meat of the data where the real moves were happening. What has been seen is those at the top are staying pretty consistent, but there are new emerging players meaning they are now getting a lot of total points and have been doing it recently.
+
+## Week 31...
 
 
 
