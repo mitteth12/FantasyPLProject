@@ -201,7 +201,8 @@ gw27 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
 gw29 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
 gw30 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw30.csv")
-#gw31 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
+gw31 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
+#gw32 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw32.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -238,7 +239,8 @@ gw27 <- gameweek_column_cleaner(gw27)
 gw28 <- gameweek_column_cleaner(gw28)
 gw29 <- gameweek_column_cleaner(gw29)
 gw30 <- gameweek_column_cleaner(gw30)
-#gw31 <- gameweek_column_cleaner(gw31)
+gw31 <- gameweek_column_cleaner(gw31)
+#gw32 <- gameweek_column_cleaner(gw32)
 
 ```
 
@@ -286,12 +288,13 @@ gw27_projections <- rbind(gw26_projections, gw27)
 gw28_projections <- rbind(gw27_projections, gw28)
 gw29_projections <- rbind(gw28_projections, gw29)
 gw30_projections <- rbind(gw29_projections, gw30)
-#gw31_projections <- rbind(gw30_projections, gw31)
+gw31_projections <- rbind(gw30_projections, gw31)
+#gw32_projections <- rbind(gw31_projections, gw32)
 
 #Last Week's Project Model
-X = gw29_projections
+X = gw30_projections
 #Current Week's Projection Model
-XX = gw30_projections
+XX = gw31_projections
 ```
 
 ```{r}
@@ -451,17 +454,17 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw26_projectionsA <- rbind(gw26)
-gw27_projectionsA <- rbind(gw26_projectionsA,gw27)
+gw27_projectionsA <- rbind(gw27)
 gw28_projectionsA <- rbind(gw27_projectionsA,gw28)
 gw29_projectionsA <- rbind(gw28_projectionsA,gw29)
 gw30_projectionsA <- rbind(gw29_projectionsA,gw30)
-#gw31_projectionsA <- rbind(gw30_projectionsA,gw31)
+gw31_projectionsA <- rbind(gw30_projectionsA,gw31)
+#gw32_projectionsA <- rbind(gw31_projectionsA,gw32)
 
 #Last Week's Project Model
-Y = gw29_projectionsA
+Y = gw30_projectionsA
 #Current Week's Projection Model
-YY = gw30_projectionsA
+YY = gw31_projectionsA
 ```
 
 ```{r}
@@ -698,7 +701,9 @@ Tottenham's striking force as a whole is very inform at the moment. The trio of 
 
 ## Week 31...
 
+Tottenham again has really been showing up in form. They control 4 of the top 5 spots for the highest performers in the last five weeks. That speaks volumes. They also look to have some good matchups, so we will use our transfers this week to hop on the Spurs train. The Spurs player of choice is going to be Son over Harry Kane because I can afford Son. Again it looks like my defenders are still doing fine. All of them are in the top 6 besides Ruben Dias who has been hurt. If need be though, Matty Cash and Conor Coady are options. Toney has really been on the rise while the three forwards I have, slowly have been falling. A cheap option that could help me move in Son would be Pukki. Norwich has a lot of good matchups in coming with a last push to try to get out of relegation, so he might be a great option. I feel okay about the midfield as well. Three of my players are in the top 10 while one is a really cheap option to make way for Son to come in and Coutinho is high on the form list.
 
+## Week 32...
 
 
 
