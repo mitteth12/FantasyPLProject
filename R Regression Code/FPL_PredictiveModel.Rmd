@@ -204,7 +204,11 @@ gw30 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/202
 gw31 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
 gw32 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw32.csv")
 gw33 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw33.csv")
-#gw34 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw34.csv")
+gw34 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw34.csv")
+gw35 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw35.csv")
+gw36 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw36.csv")
+#gw37 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw37.csv")
+#gw38 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw38.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -244,7 +248,11 @@ gw30 <- gameweek_column_cleaner(gw30)
 gw31 <- gameweek_column_cleaner(gw31)
 gw32 <- gameweek_column_cleaner(gw32)
 gw33 <- gameweek_column_cleaner(gw33)
-#gw34 <- gameweek_column_cleaner(gw34)
+gw34 <- gameweek_column_cleaner(gw34)
+gw35 <- gameweek_column_cleaner(gw35)
+gw36 <- gameweek_column_cleaner(gw36)
+#gw37 <- gameweek_column_cleaner(gw37)
+#gw38 <- gameweek_column_cleaner(gw38)
 
 ```
 
@@ -295,12 +303,16 @@ gw30_projections <- rbind(gw29_projections, gw30)
 gw31_projections <- rbind(gw30_projections, gw31)
 gw32_projections <- rbind(gw31_projections, gw32)
 gw33_projections <- rbind(gw32_projections, gw33)
-#gw34_projections <- rbind(gw33_projections, gw34)
+gw34_projections <- rbind(gw33_projections, gw34)
+gw35_projections <- rbind(gw34_projections, gw35)
+gw36_projections <- rbind(gw35_projections, gw36)
+#gw36_projections <- rbind(gw36_projections, gw37)
+#gw36_projections <- rbind(gw37_projections, gw38)
 
 #Last Week's Project Model
-X = gw32_projections
+X = gw35_projections
 #Current Week's Projection Model
-XX = gw33_projections
+XX = gw36_projections
 ```
 
 ```{r}
@@ -460,17 +472,18 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw29_projectionsA <- rbind(gw29)
-gw30_projectionsA <- rbind(gw29_projectionsA,gw30)
-gw31_projectionsA <- rbind(gw30_projectionsA,gw31)
-gw32_projectionsA <- rbind(gw31_projectionsA,gw32)
+gw32_projectionsA <- rbind(gw32)
 gw33_projectionsA <- rbind(gw32_projectionsA,gw33)
-#gw34_projectionsA <- rbind(gw33_projectionsA,gw34)
+gw34_projectionsA <- rbind(gw33_projectionsA,gw34)
+gw35_projectionsA <- rbind(gw34_projectionsA,gw35)
+gw36_projectionsA <- rbind(gw35_projectionsA,gw36)
+#gw36_projectionsA <- rbind(gw36_projectionsA,gw37)
+#gw36_projectionsA <- rbind(gw37_projectionsA,gw38)
 
 #Last Week's Project Model
-Y = gw32_projectionsA
+Y = gw35_projectionsA
 #Current Week's Projection Model
-YY = gw33_projectionsA
+YY = gw36_projectionsA
 ```
 
 ```{r}
@@ -719,6 +732,20 @@ Really not a lot of movement this gameweek. Looks like Richarlison is finding so
 
 ## Week 34...
 
+Again not really a lot of movement. With only a couple weeks left the team is looking setup to finish off the season.
+
+## Week 35...
+
+We know that we have two transfers available this week. Hopefully the data will give us some insight on who are good matchups. Something that is not considered in the data, but for me is that playing a lesser opponent may be beneficial. We saw with the matrix we did earlier in the season that was not necessarily the case, but a combination of form and amount of gameweeks has led to some thoughts about data suggestions. I need to transfer out Pukki since Norwich has been relegated and Spurs have some tough games ahead, so I am making a bold move, but the data suggests Werner has been one of the best in the league in terms of form at the moment and Chelsea have a double gameweek. In order to facilitate Werner having good games Mount and Havertz will have to be part of that. In that case we have the trio of Chelsea players. The data says Mount and Werner might be quality picks right now and with Chelsea's schedule and double gameweek it might be worth the risk at the end of the season. The data if there was only one gameweek might suggest picking up the likes of Toney or Bowen, but seeing Werner where he is on the form list puts me in a position where I am going to go for it and hope for a little rise in all of the Chelsea's players points or at least have picked a couple of their stars of the next two games.
+
+## Week 36...
+
+De Bruyne moved up all the way to 5th from 13th in our overall ranking data. I captained him last week and his four goals proved to be vital to him moving up the rankings. Besides that not a whole lot of movement at the top. Sterling moved up a decent amount. In terms of form we have a pretty good mix of players with Son staying up at the top and Gabriel Jesus leading the pack.
+
+## Week 37...
+
+
+## Week 38...
 
 
 
