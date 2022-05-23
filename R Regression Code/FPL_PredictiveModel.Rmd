@@ -13,9 +13,9 @@ library(tidyverse)
 
 ```{r}
 #Load in Beginning Data
-FPL_1920 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2019-20/players_raw.csv")
-FPL_2021 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
-NewFPL2021 <- read_csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+FPL_1920 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2019-20/players_raw.csv")
+FPL_2021 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
+NewFPL2021 <- read_csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2020-21/players_raw.csv")
 ```
 
 ```{r}
@@ -116,7 +116,7 @@ names(New1920)[names(New1920) == "scale_minutes"] <- "minutes"
 ```
 
 ```{r}
-FPL_2122 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
+FPL_2122 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
 ```
 
 ```{r}
@@ -178,37 +178,36 @@ names(New2122)[names(New2122) == "scale_minutes"] <- "minutes"
 
 ```{r}
 #Insert in New Gameweeks
-gw8 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
-gw9 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
-gw10 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw10.csv")
-gw11 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
-gw12 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
-gw13 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
-gw14 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
-gw15 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
-gw16 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
-gw17 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
-gw18 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
-gw19 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
-gw20 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw20.csv")
-gw21 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
-gw22 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
-gw23 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
-gw24 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
-gw25 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
-gw26 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
-gw27 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw27.csv")
-gw28 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
-gw29 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
-gw30 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw30.csv")
-gw31 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
-gw32 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw32.csv")
-gw33 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw33.csv")
-gw34 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw34.csv")
-gw35 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw35.csv")
-gw36 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw36.csv")
-#gw37 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw37.csv")
-#gw38 <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/gw38.csv")
+gw8 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw8.csv")
+gw9 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw9.csv")
+gw10 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw10.csv")
+gw11 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw11.csv")
+gw12 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw12.csv")
+gw13 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw13.csv")
+gw14 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw14.csv")
+gw15 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw15.csv")
+gw16 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw16.csv")
+gw17 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw17.csv")
+gw18 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw18.csv")
+gw19 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw19.csv")
+gw20 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw20.csv")
+gw21 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw21.csv")
+gw22 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw22.csv")
+gw23 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw23.csv")
+gw24 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw24.csv")
+gw25 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw25.csv")
+gw26 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw26.csv")
+gw27 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw27.csv")
+gw28 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw28.csv")
+gw29 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw29.csv")
+gw30 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw30.csv")
+gw31 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw31.csv")
+gw32 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw32.csv")
+gw33 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw33.csv")
+gw34 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw34.csv")
+gw35 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw35.csv")
+gw36 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw36.csv")
+gw38 <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/gw38.csv")
 
 #Just keep adding gameweeks to keep it going
 ```
@@ -251,14 +250,13 @@ gw33 <- gameweek_column_cleaner(gw33)
 gw34 <- gameweek_column_cleaner(gw34)
 gw35 <- gameweek_column_cleaner(gw35)
 gw36 <- gameweek_column_cleaner(gw36)
-#gw37 <- gameweek_column_cleaner(gw37)
-#gw38 <- gameweek_column_cleaner(gw38)
+gw38 <- gameweek_column_cleaner(gw38)
 
 ```
 
 ```{r}
 #Bring in Clean Dataset for 2021-22 Season
-Base_GW <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
+Base_GW <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/FPLCurrentYearPredict.csv")
 Base_GW <- Base_GW %>% select(-c(clean.sheets, saves.))
 ```
 
@@ -306,13 +304,12 @@ gw33_projections <- rbind(gw32_projections, gw33)
 gw34_projections <- rbind(gw33_projections, gw34)
 gw35_projections <- rbind(gw34_projections, gw35)
 gw36_projections <- rbind(gw35_projections, gw36)
-#gw36_projections <- rbind(gw36_projections, gw37)
-#gw36_projections <- rbind(gw37_projections, gw38)
+gw38_projections <- rbind(gw36_projections, gw38)
 
 #Last Week's Project Model
-X = gw35_projections
+X = gw36_projections
 #Current Week's Projection Model
-XX = gw36_projections
+XX = gw38_projections
 ```
 
 ```{r}
@@ -432,7 +429,7 @@ Final_Data$total_contributions <- Final_Data$assists + Final_Data$goals_scored
 
 ```{r}
 #Load in some player data
-player_info <- read.csv("~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/2021-22/fplplayer_info.csv")
+player_info <- read.csv("~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/2021-22/fplplayer_info.csv")
 ```
 
 ```{r}
@@ -453,7 +450,7 @@ Final_Data <- Final_Data %>% select(c(name,pos,squad,actual_rank,predicted_rank,
 
 ```{r}
 #Export Spreadsheet of Each Current Weeks New Predictions and Ranks (CHANGE EACH GAMEWEEK)
-write.csv(Final_Data, "~/Desktop/Data Analytics/Fantasy PL Project/FantasyPL_Data/Ranks_and_Predictions_21-22/GW23_Update.csv")
+write.csv(Final_Data, "~/Desktop/Data Analytics/Archived Projects/Fantasy PL Project/FantasyPL_Data/Ranks_and_Predictions_21-22/GW23_Update.csv")
 ```
 
 ```{r}
@@ -472,18 +469,16 @@ Final_FW <- Final_Data %>% filter(pos == 'FW')
 
 ```{r}
 #Latest five projections; for each gameweek add and delete a gameweek
-gw32_projectionsA <- rbind(gw32)
-gw33_projectionsA <- rbind(gw32_projectionsA,gw33)
+gw33_projectionsA <- rbind(gw33)
 gw34_projectionsA <- rbind(gw33_projectionsA,gw34)
 gw35_projectionsA <- rbind(gw34_projectionsA,gw35)
 gw36_projectionsA <- rbind(gw35_projectionsA,gw36)
-#gw36_projectionsA <- rbind(gw36_projectionsA,gw37)
-#gw36_projectionsA <- rbind(gw37_projectionsA,gw38)
+gw38_projectionsA <- rbind(gw36_projectionsA,gw38)
 
 #Last Week's Project Model
-Y = gw35_projectionsA
+Y = gw36_projectionsA
 #Current Week's Projection Model
-YY = gw36_projectionsA
+YY = gw38_projectionsA
 ```
 
 ```{r}
@@ -742,11 +737,24 @@ We know that we have two transfers available this week. Hopefully the data will 
 
 De Bruyne moved up all the way to 5th from 13th in our overall ranking data. I captained him last week and his four goals proved to be vital to him moving up the rankings. Besides that not a whole lot of movement at the top. Sterling moved up a decent amount. In terms of form we have a pretty good mix of players with Son staying up at the top and Gabriel Jesus leading the pack.
 
-## Week 37...
+## End of Season Write-Up
 
+Mo Salah had the highest amount of total points for both our model and for the actual totals. However, Heung-Min Son really gained on Salah which means that if we split the season up into halves Salah would have definitely been the highest point contributor in the league and the second half would have been all Heung-Min Son. Rounding out the top 5 was Kane, De Bruyne and Alexander-Arnold. Tottenham made a heavy push in the second half and it can be seen that from the total amount of points that at least Son and Kane made a big impact for Tottenham. 
 
-## Week 38...
+Looking specifically by position, starting with defenders we have a very interesting top 5 list. We have Joao Cancelo and then we have Liverpool's whole back line which speaks volumes to their contribution to their team this season. A lot of top teams are represented in the defender's list, but a couple of the lower table teams that had some stand out players were Matty Cash and Pontius Jansson for Aston Villa and Brentford respectively. As expected none of the relegated clubs have any defenders grazing the top spots.
 
+Now looking at midfielders we continue to see a similar trend with top teams being represented. One standout player in this group was James Ward-Prowse whose team, Southampton, finished 15th in the league while he managed to finish sixth highest for midfielders. Not a whole lot of overlapping of clubs it looks like for the most part each club has one or two midfielders who really got things done for their teams besides Manchester City. Manchester City, the league winners had five midfielders who were in the top 20 for predicted points this season. This is an example illustrating the depth of Manchester City's roster. Influence and threat look to still be a huge component of picking total points for players. An interesting column that was developed was total goal contributions and that seemed to lineup fairly well with the players who were at the top of the list. This makes it relatively easy for picking midfielders in that you should pick the players getting the most goals and assists.
+
+Lastly we will look at forwards. Forwards turned out to be an interesting one as two of the three relegated sides are represented in the top 10 for forwards. This alone does not necessarily indicate much. It could be that without these players they would have done way worse, but it could also just speak volumes to the fact that if the clubs defense were a little better it could have had more influence on the team staying in the league. We see Kane and Ronaldo holding the top spots for forwards. We have such a higher volume of midfielders and defenders than we do with forwards, so it would make sense that we only see about one player being represented for each team.
+
+Overall, there are a lot more smaller details that could be further evaluated in the future with week by week tracking. We will end this markdown by applying our model to our final data to see how our model performed.
+
+```{r}
+season_ending_model <- lm(actual_rank ~ assists + bonus + bps + goals_scored + influence + threat + minutes, data = Final_Data)
+summary(season_ending_model)
+```
+
+In evaluating how the variables did in predicting our players we want to look at how the actual rank is explained by the variables. It can be seen that all of our model variables have some significance besides 'bonus'.
 
 
 
