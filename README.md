@@ -3,7 +3,7 @@
  
 2021/2022 SEASON RESULTS:
 
-6TH PLACE OUT OF 29 TEAMS!
+•6th place out of 29 Teams•
 
 
 Data Provided By: https://github.com/vaastav/Fantasy-Premier-League
