@@ -1,6 +1,6 @@
 # Fantasy Premier League Project
 
-2021/2022 SEASON RESULTS ->
+2021/2022 Season Results ->
 6th place out of 29 teams
 
 &nbsp;
